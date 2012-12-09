@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import seventhwheel.pos.control.*?>
+
+<BorderPane fx:id="borderPaneRegister" styleClass="root, body" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.RegisterItemController">
+  <center>
+    <StackPane fx:id="stackPane">
+      <children>
+        <VBox fx:id="bodyRegisterItem" spacing="20.0">
+          <children>
+            <HBox alignment="CENTER_LEFT">
+              <children>
+                <Button id="btnRegistItem" fx:id="btnBack" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
+              </children>
+              <VBox.margin>
+                <Insets />
+              </VBox.margin>
+            </HBox>
+            <GridPane styleClass="box" vgap="5.0">
+              <children>
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtItemName" disable="true" onAction="#handleTxtItemNameAction" prefWidth="400.0" promptText="商品名を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <NumberTextField fx:id="txtPrice" disable="true" onAction="#handleTxtPriceAction" prefWidth="400.0" promptText="単価を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button id="btnClear" fx:id="btnRegister" disable="true" mnemonicParsing="false" onAction="#handleBtnRegisterAction" text="登録" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </center>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</BorderPane>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="root" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.PosController">
+  <children>
+    <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <bottom>
+        <VBox>
+          <children>
+            <HBox alignment="CENTER" prefWidth="200.0" styleClass="footer">
+              <children>
+                <Label alignment="CENTER" styleClass="footer, copyright" text="powered by Takahashi Akifumi" />
+              </children>
+            </HBox>
+          </children>
+          <BorderPane.margin>
+            <Insets />
+          </BorderPane.margin>
+        </VBox>
+      </bottom>
+      <center>
+        <StackPane id="bodyPos" fx:id="stackPane">
+          <children>
+            <VBox fx:id="bodyPos">
+              <children>
+                <BorderPane prefWidth="200.0" styleClass="bordered-box" VBox.vgrow="ALWAYS">
+                  <center>
+                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                      <children>
+                        <GridPane>
+                          <children>
+                            <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField fx:id="txtItemName" editable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <TextField id="txtItemName" fx:id="txtPrice" editable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
+                    </VBox>
+                  </center>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+                  <VBox.margin>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </VBox.margin>
+                </BorderPane>
+                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                  <children>
+                    <Button id="btnRegistItem" fx:id="btnRegisterItem" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品登録画面へ" />
+                  </children>
+                  <VBox.margin>
+                    <Insets bottom="10.0" left="20.0" right="20.0" />
+                  </VBox.margin>
+                </HBox>
+              </children>
+            </VBox>
+          </children>
+        </StackPane>
+      </center>
+      <top>
+        <HBox styleClass="header">
+          <children>
+            <VBox>
+              <children>
+                <Label styleClass="header, title" text="店っこくちない専用POSシステム" />
+                <Label styleClass="header, systemname" text="めだかちゃん" />
+              </children>
+            </VBox>
+          </children>
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </padding>
+        </HBox>
+      </top>
+    </BorderPane>
+  </children>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</AnchorPane>

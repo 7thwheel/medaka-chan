@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane fx:id="borderPane" styleClass="root, body" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.PosController">
+  <center>
+    <StackPane id="bodyPos" fx:id="stackPane">
+      <children>
+        <VBox fx:id="bodyPos" spacing="20.0">
+          <children>
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+              <children>
+                <Button id="btnRegistItem" fx:id="btnRegisterItem" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品登録画面へ" />
+              </children>
+              <VBox.margin>
+                <Insets />
+              </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="box">
+              <children>
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" />
+                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" />
+                <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
+              </children>
+            </HBox>
+            <VBox spacing="20.0" styleClass="box">
+              <children>
+                <HBox alignment="CENTER_LEFT">
+                  <children>
+                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" />
+                    <TextField fx:id="txtItemName" editable="false" prefWidth="400.0" />
+                  </children>
+                </HBox>
+                <HBox>
+                  <children>
+                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" />
+                    <TextField id="txtItemName" fx:id="txtPrice" editable="false" prefWidth="400.0" />
+                  </children>
+                </HBox>
+              </children>
+            </VBox>
+            <VBox styleClass="box" VBox.vgrow="ALWAYS">
+              <children>
+                <TableView fx:id="table" VBox.vgrow="ALWAYS">
+                  <columns>
+                    <TableColumn minWidth="100.0" prefWidth="300.0" text="商品名" fx:id="colItemName" />
+                    <TableColumn prefWidth="100.0" text="単価" fx:id="colItemPrice" />
+                    <TableColumn prefWidth="100.0" text="個数" />
+                  </columns>
+                </TableView>
+              </children>
+            </VBox>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </center>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</BorderPane>
