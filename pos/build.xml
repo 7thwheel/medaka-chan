@@ -1,0 +1,55 @@
+<project name="JavaFXSample" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<target name="default">
+		<taskdef
+			resource="com/sun/javafx/tools/ant/antlib.xml"
+			uri="javafx:com.sun.javafx.tools.ant"
+			classpath="C:/Program Files/Oracle/JavaFX 2.2 SDK/lib/ant-javafx.jar" />
+
+		<fx:application
+			id="PosApp"
+			name="Pos Application"
+			mainClass="seventhwheel.pos.application.PosApplication" />
+		<fx:resources id="appRes">
+<!--
+			<fx:fileset dir="dist" requiredFor="preloader" includes="mypreloader.jar" />
+			<fx:fileset dir="dist" includes="myapp.jar" />
+-->
+		</fx:resources>
+
+		<fx:jar destfile="deploy/pos.jar">
+			<!-- Define what to launch -->
+			<fx:application refid="PosApp" />
+
+			<!-- Define what classpath to use -->
+			<fx:resources refid="appRes" />
+
+			<manifest>
+				<attribute name="Implementation-Vendor" value="7thwheel applications" />
+				<attribute name="Implementation-Title" value="medaka chan" />
+				<attribute name="Implementation-Version" value="1.0" />
+			</manifest>
+
+			<!-- Define what files to include -->
+			<fileset dir="bin" />
+		</fx:jar>
+
+<!--
+		<fx:signjar keyStore="${basedir}/sample.jks" destdir="dist" alias="javafx" storePass="****" keyPass="****">
+			<fileset dir='dist/*.jar' />
+		</fx:signjar>
+-->
+
+		<fx:deploy width="600" height="480" outdir="deploy" embedJNLP="true" outfile="pos">
+
+			<fx:application refId="PosApp" />
+
+			<fx:resources refid="appRes" />
+
+			<fx:info title="pos" vendor="7thwheel applications" />
+
+			<!-- Request elevated permissions -->
+			<fx:permissions elevated="true" />
+		</fx:deploy>
+	</target>
+</project>
+
