@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="root, message-box" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.MessageBoxController">
+  <children>
+    <AnchorPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <children>
+        <VBox spacing="20.0" styleClass="content" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+          <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+              <children>
+                <StackPane styleClass="image">
+                  <children>
+                    <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="confirm" />
+                  </children>
+                </StackPane>
+                <Label fx:id="message" styleClass="message" text="登録します。よろしいですか？" />
+              </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+              <children>
+                <Button fx:id="torokuButton" mnemonicParsing="false" onAction="#handleTorokuButton" text="登録" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelButton" text="キャンセル" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</AnchorPane>
