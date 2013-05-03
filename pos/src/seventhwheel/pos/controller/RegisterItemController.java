@@ -61,6 +61,9 @@ public class RegisterItemController implements Initializable {
     if (item != null) {
       txtItemName.setText(item.getName());
       txtPrice.setText(item.getPrice());
+    } else {
+      txtItemName.clear();
+      txtPrice.clear();
     }
 
     indicator.setVisible(item != null);
