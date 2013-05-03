@@ -1,42 +1,83 @@
 package seventhwheel.pos.db;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionPool {
 
-    private static Connection connection;
+  private static Connection connection;
 
-    public static Connection getConnection() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+  /**
+   * returns pooled connection.
+   * @return
+   */
+  public static Connection getConnection() {
+    loadJdbcDriver();
 
-        if (connection == null) {
-            String dataSource = "jdbc:sqlite:C:/pleiades42/workspace/pos/pos.db";
-            try {
-                connection = DriverManager.getConnection(dataSource);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    String datasource = getDataSource();
+    System.out.println(datasource);
 
-        return connection;
+    if (connection == null) {
+      try {
+        connection = DriverManager.getConnection(datasource);
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
     }
 
-    public static void close() {
-        if (connection == null) {
-            return;
-        }
+    return connection;
+  }
 
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+  /**
+   * closes connection.
+   */
+  public static void close() {
+    if (connection == null) {
+      return;
     }
+
+    try {
+      connection.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * loads JDBC driver for sqlite.
+   */
+  static void loadJdbcDriver() {
+    try {
+      Class.forName("org.sqlite.JDBC");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * gets Data Source from properties file.
+   * @return
+   */
+  static String getDataSource() {
+    Properties props = new Properties();
+    try {
+      props.load(new InputStreamReader(new FileInputStream("pos.properties"), "UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException("jarファイルと同じディレクトリに pos.properties を配置してください。");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return props.getProperty("datasource");
+  }
 
 }
