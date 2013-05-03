@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import seventhwheel.pos.control.*?>
+<?import seventhwheel.pos.control.combobox.*?>
 
 <BorderPane fx:id="borderPaneRegister" styleClass="root, body" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.RegisterItemController">
   <center>
@@ -23,16 +24,28 @@
                 <Insets />
               </VBox.margin>
             </HBox>
-            <GridPane styleClass="box" vgap="5.0">
+            <GridPane hgap="10.0" styleClass="box" vgap="20.0">
               <children>
-                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="txtItemName" disable="true" onAction="#handleTxtItemNameAction" prefWidth="400.0" promptText="商品名を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <NumberTextField fx:id="txtPrice" disable="true" onAction="#handleTxtPriceAction" prefWidth="400.0" promptText="単価を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button id="btnClear" fx:id="btnRegister" disable="true" mnemonicParsing="false" onAction="#handleBtnRegisterAction" text="登録" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <NumberTextField fx:id="txtPrice" disable="false" onAction="#handleTxtPriceAction" prefWidth="400.0" promptText="単価を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="部門" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                <BumonComboBox fx:id="cobBumon" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="txtItemName" onAction="#handleTxtItemNameAction" prefWidth="400.0" promptText="商品名を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                  <children>
+                    <Label fx:id="indicator" styleClass="indicator" text="登録済みデータを編集します" />
+                  </children>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                  <children>
+                    <Button id="btnClear" fx:id="btnRegister" mnemonicParsing="false" onAction="#handleBtnRegisterAction" text="登録" />
+                    <Label fx:id="errorMassage" styleClass="indicator, errorMessage" text="エラーメッセージ" />
+                  </children>
+                </HBox>
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="NEVER" />
@@ -40,6 +53,8 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
