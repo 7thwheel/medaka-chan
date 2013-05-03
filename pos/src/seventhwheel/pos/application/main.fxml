@@ -16,7 +16,7 @@
           <children>
             <HBox alignment="CENTER" prefWidth="200.0" styleClass="footer">
               <children>
-                <Label alignment="CENTER" styleClass="footer, copyright" text="powered by Takahashi Akifumi" />
+                <Label alignment="CENTER" styleClass="footer, copyright" text="Designed by Takahashi Akifumi" />
               </children>
             </HBox>
           </children>
