@@ -50,6 +50,7 @@ public class PosController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        ConnectionPool.getConnection();
         txtBarCode.setOnKeyTyped(new EventHandler<KeyEvent>() {
 
             @Override
