@@ -8,6 +8,12 @@ public class ItemSaleModel {
 
     private String amount;
 
+    public ItemSaleModel(String itemName, String price, String amount) {
+      setItemName(itemName);
+      setPrice(price);
+      setAmount(amount);
+    }
+
     public String getItemName() {
         return itemName;
     }

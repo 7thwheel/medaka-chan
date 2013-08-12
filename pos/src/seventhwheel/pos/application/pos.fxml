@@ -29,22 +29,6 @@
                 <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
               </children>
             </HBox>
-            <VBox spacing="20.0" styleClass="box">
-              <children>
-                <HBox alignment="CENTER_LEFT">
-                  <children>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" />
-                    <TextField fx:id="txtItemName" editable="false" prefWidth="400.0" />
-                  </children>
-                </HBox>
-                <HBox>
-                  <children>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" />
-                    <TextField id="txtItemName" fx:id="txtPrice" editable="false" prefWidth="400.0" />
-                  </children>
-                </HBox>
-              </children>
-            </VBox>
             <VBox styleClass="box" VBox.vgrow="ALWAYS">
               <children>
                 <TableView fx:id="table" VBox.vgrow="ALWAYS">

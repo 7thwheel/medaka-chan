@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,12 +22,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.model.Item;
 import seventhwheel.pos.model.ItemSaleModel;
 
 public class PosController implements Initializable {
@@ -53,6 +57,13 @@ public class PosController implements Initializable {
                 System.out.println(event);
             }
         });
+
+        colItemName.setCellValueFactory(
+            new PropertyValueFactory<ItemSaleModel, String>("itemName"));
+        colPrice.setCellValueFactory(
+            new PropertyValueFactory<ItemSaleModel, String>("price"));
+        colAmount.setCellValueFactory(
+            new PropertyValueFactory<ItemSaleModel, String>("amount"));
     }
 
     @FXML
@@ -66,6 +77,7 @@ public class PosController implements Initializable {
     @FXML
     private void handleTxtBarCodeAction(ActionEvent event) {
         Connection con = ConnectionPool.getConnection();
+        ItemSaleModel model = null;
 
         try (Statement stmt = con.createStatement()) {
             String sql = "SELECT * FROM Item where ItemCode = '%s'";
@@ -74,9 +86,8 @@ public class PosController implements Initializable {
 
             while (rs.next()) {
                 String name = rs.getString("name");
-                int price = rs.getInt("price");
-                txtItemName.setText(name);
-                txtPrice.setText(Integer.toString(price));
+                String price = rs.getString("price");
+                model = new ItemSaleModel(name, price, "1");
             }
             txtBarCode.clear();
             txtBarCode.home();
@@ -85,6 +96,7 @@ public class PosController implements Initializable {
             throw new RuntimeException(e);
         }
 
+        table.getItems().add(model);
     }
 
     @FXML
