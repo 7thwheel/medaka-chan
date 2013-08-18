@@ -12,7 +12,7 @@
   <center>
     <StackPane id="bodyPos" fx:id="stackPane">
       <children>
-        <VBox fx:id="bodyPos" spacing="20.0">
+        <VBox fx:id="bodyPos" spacing="10.0">
           <children>
             <HBox alignment="CENTER_LEFT" prefWidth="200.0">
               <children>
@@ -22,36 +22,22 @@
                 <Insets />
               </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" styleClass="box">
+            <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
-                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="バーコード" />
-                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" />
+                <TextField fx:id="txtQuantity" alignment="CENTER" prefWidth="60.0" promptText="個数" />
+                <Label text="個" />
+                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" />
                 <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
               </children>
             </HBox>
-            <VBox spacing="20.0" styleClass="box">
-              <children>
-                <HBox alignment="CENTER_LEFT">
-                  <children>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="商品名" />
-                    <TextField fx:id="txtItemName" editable="false" prefWidth="400.0" />
-                  </children>
-                </HBox>
-                <HBox>
-                  <children>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="単価" />
-                    <TextField id="txtItemName" fx:id="txtPrice" editable="false" prefWidth="400.0" />
-                  </children>
-                </HBox>
-              </children>
-            </VBox>
             <VBox styleClass="box" VBox.vgrow="ALWAYS">
               <children>
                 <TableView fx:id="table" VBox.vgrow="ALWAYS">
                   <columns>
                     <TableColumn minWidth="100.0" prefWidth="300.0" text="商品名" fx:id="colItemName" />
-                    <TableColumn prefWidth="100.0" text="単価" fx:id="colItemPrice" />
-                    <TableColumn prefWidth="100.0" text="個数" />
+                    <TableColumn prefWidth="100.0" text="単価" fx:id="colPrice" />
+                    <TableColumn prefWidth="100.0" text="個数" fx:id="colQuantity" />
+                    <TableColumn prefWidth="75.0" text="金額" fx:id="colAmount" />
                   </columns>
                 </TableView>
               </children>

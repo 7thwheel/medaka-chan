@@ -6,11 +6,14 @@ public class ItemSaleModel {
 
     private String price;
 
+    private String quantity;
+
     private String amount;
 
-    public ItemSaleModel(String itemName, String price, String amount) {
+    public ItemSaleModel(String itemName, String price, String quantity, String amount) {
       setItemName(itemName);
       setPrice(price);
+      setQuantity(quantity);
       setAmount(amount);
     }
 
@@ -36,5 +39,13 @@ public class ItemSaleModel {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getQuantity() {
+      return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+      this.quantity = quantity;
     }
 }
