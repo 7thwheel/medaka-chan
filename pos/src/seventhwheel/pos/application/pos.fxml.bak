@@ -24,8 +24,6 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
-                <TextField fx:id="txtQuantity" alignment="CENTER" prefWidth="60.0" promptText="個数" />
-                <Label text="個" />
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" />
                 <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
               </children>

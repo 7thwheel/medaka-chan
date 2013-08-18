@@ -12,12 +12,15 @@ import java.util.ResourceBundle;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -35,6 +38,7 @@ public class PosController implements Initializable {
     public TextField txtPrice;
     public Button btnRegisterItem;
     public BorderPane borderPane;
+    public Label lblTotalAmount;
 
     public TableView<ItemSaleModel> table;
     public TableColumn<ItemSaleModel, String> colItemName;
@@ -43,6 +47,8 @@ public class PosController implements Initializable {
     public TableColumn<ItemSaleModel, String> colAmount;
 
     private int quantity;
+    private SimpleStringProperty totalAmountProperty = new SimpleStringProperty("0");
+    private int totalAmount = 0;
 
     public PosController() {
     }
@@ -66,6 +72,7 @@ public class PosController implements Initializable {
 
         initQuantity();
         txtBarCode.requestFocus();
+        lblTotalAmount.textProperty().bind(totalAmountProperty);
     }
 
     @FXML
@@ -98,6 +105,7 @@ public class PosController implements Initializable {
                             BigDecimal.valueOf(quantity));
                 model = new ItemSaleModel(name, price, String.valueOf(quantity), amount.toString());
                 table.getItems().add(model);
+                sumTotalAmount(amount.intValue());
             }
             initQuantity();
             txtBarCode.clear();
@@ -105,6 +113,11 @@ public class PosController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    void sumTotalAmount(int amount) {
+        totalAmount = BigDecimal.valueOf(totalAmount).add(BigDecimal.valueOf(amount)).intValue();
+        totalAmountProperty.set(String.format("%,d", totalAmount));
     }
 
     @FXML

@@ -28,8 +28,15 @@
                 <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
               </children>
             </HBox>
-            <VBox styleClass="box" VBox.vgrow="ALWAYS">
+            <VBox id="" spacing="3.0" styleClass="box" VBox.vgrow="ALWAYS">
               <children>
+                <HBox spacing="5.0">
+                  <children>
+                    <Label text="合計金額" />
+                    <Label fx:id="lblTotalAmount" text="0" />
+                    <Label text="円" />
+                  </children>
+                </HBox>
                 <TableView fx:id="table" VBox.vgrow="ALWAYS">
                   <columns>
                     <TableColumn minWidth="100.0" prefWidth="300.0" text="商品名" fx:id="colItemName" />
