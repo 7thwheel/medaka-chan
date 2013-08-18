@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -29,13 +30,17 @@ import seventhwheel.pos.constants.UserAction;
 import seventhwheel.pos.control.MessageBox;
 import seventhwheel.pos.control.NumberTextField;
 import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.model.Bumon;
 import seventhwheel.pos.model.Item;
+import seventhwheel.pos.model.Suppliers;
 
 public class RegisterItemController implements Initializable {
 
   public TextField txtBarCode;
   public TextField txtItemName;
   public NumberTextField txtPrice;
+  public ComboBox<Bumon> cobBumon;
+  public ComboBox<Suppliers> cobSuppliers;
   public Button btnRegister;
   public Button btnBack;
   public BorderPane borderPaneRegister;
@@ -61,6 +66,8 @@ public class RegisterItemController implements Initializable {
     if (item != null) {
       txtItemName.setText(item.getName());
       txtPrice.setText(item.getPrice());
+      Suppliers suppliers = new Suppliers(item.getSupplierCode());
+      cobSuppliers.setValue(suppliers);
     } else {
       txtItemName.clear();
       txtPrice.clear();
@@ -102,37 +109,57 @@ public class RegisterItemController implements Initializable {
     }
 
     // update
-    String barcode = txtBarCode.getText();
+    String itemCode = txtBarCode.getText();
+    Item item = select(itemCode);
+
     Connection con = ConnectionPool.getConnection();
 
-    try (Statement stmt = con.createStatement()) {
-      String sql = "SELECT * FROM Item where ItemCode = '%s';";
-      String itemCode = txtBarCode.getText();
-      ResultSet rs = stmt.executeQuery(String.format(sql, itemCode));
-
-      List<Item> items = new ArrayList<>();
-      while (rs.next()) {
-        Item item = new Item();
-        item.setItemcode(rs.getString("ItemCode"));
-        item.setName(rs.getString("Name"));
-        item.setPrice(rs.getString("Price"));
-        items.add(item);
-      }
-      if (items.isEmpty()) {
-        try (Statement stmt2 = con.createStatement()) {
-          sql = "INSERT INTO Item (ItemCode, Name, Price) VALUES ('%s', '%s', '%s');";
-          stmt2.executeUpdate(String.format(sql, itemCode, txtItemName.getText(), txtPrice.getText()));
-        }
-      } else {
-        try (Statement stmt2 = con.createStatement()) {
-          sql = "UPDATE Item SET Name='%s', Price='%s' WHERE ItemCode='%s';";
-          stmt2.executeUpdate(String.format(sql, txtItemName.getText(), txtPrice.getText(), itemCode));
-        }
-      }
-
+    try {
+        if (item == null) {
+            try (Statement stmt2 = con.createStatement()) {
+              String sql = "INSERT INTO Item (ItemCode, Name, Price, SupplierCode) VALUES ('%s', '%s', '%s', '%s');";
+              stmt2.executeUpdate(String.format(
+                      sql, itemCode, txtItemName.getText(), txtPrice.getText(), cobSuppliers.getValue().getSuppliercode()));
+            }
+          } else {
+            try (Statement stmt2 = con.createStatement()) {
+              String sql = "UPDATE Item SET Name='%s', Price='%s', SupplierCode=%s WHERE ItemCode='%s';";
+              stmt2.executeUpdate(
+                      String.format(
+                              sql, txtItemName.getText(), txtPrice.getText(), cobSuppliers.getValue().getSuppliercode(), itemCode));
+            }
+          }
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+        throw new RuntimeException(e);
     }
+//    try (Statement stmt = con.createStatement()) {
+//      String sql = "SELECT * FROM Item where ItemCode = '%s';";
+//      String itemCode = txtBarCode.getText();
+//      ResultSet rs = stmt.executeQuery(String.format(sql, itemCode));
+//
+//      List<Item> items = new ArrayList<>();
+//      while (rs.next()) {
+//        Item item = new Item();
+//        item.setItemcode(rs.getString("ItemCode"));
+//        item.setName(rs.getString("Name"));
+//        item.setPrice(rs.getString("Price"));
+//        items.add(item);
+//      }
+//      if (items.isEmpty()) {
+//        try (Statement stmt2 = con.createStatement()) {
+//          sql = "INSERT INTO Item (ItemCode, Name, Price) VALUES ('%s', '%s', '%s');";
+//          stmt2.executeUpdate(String.format(sql, itemCode, txtItemName.getText(), txtPrice.getText()));
+//        }
+//      } else {
+//        try (Statement stmt2 = con.createStatement()) {
+//          sql = "UPDATE Item SET Name='%s', Price='%s' WHERE ItemCode='%s';";
+//          stmt2.executeUpdate(String.format(sql, txtItemName.getText(), txtPrice.getText(), itemCode));
+//        }
+//      }
+//
+//    } catch (SQLException e) {
+//      throw new RuntimeException(e);
+//    }
 
     txtBarCode.requestFocus();
   }
@@ -223,6 +250,7 @@ public class RegisterItemController implements Initializable {
         item.setItemcode(rs.getString("ItemCode"));
         item.setName(rs.getString("Name"));
         item.setPrice(rs.getString("Price"));
+        item.setSupplierCode(rs.getInt("SupplierCode"));
         items.add(item);
       }
 

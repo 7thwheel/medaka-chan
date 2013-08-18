@@ -8,78 +8,105 @@ import java.io.Serializable;
 
 /**
  * ItemVo.
+ *
  * @author akifumi
- * @version 1.0 
- * history 
- * Symbol	Date		Person		Note
- * [1]		2013/05/03	akifumi		Generated.
+ * @version 1.0 history Symbol Date Person Note [1] 2013/05/03 akifumi
+ *          Generated.
  */
-public class Item implements Serializable{
+public class Item implements Serializable {
 
-	public static final String TABLE = "ITEM";
+    public static final String TABLE = "ITEM";
 
-	/**
-	 * id:integer(2000000000,10) <Primary Key>
-	 */
-	private int id;
+    /**
+     * id:integer(2000000000,10) <Primary Key>
+     */
+    private int id;
 
-	/**
-	 * ItemCode:(2000000000,10)
-	 */
-	private String itemcode;
+    /**
+     * ItemCode:(2000000000,10)
+     */
+    private String itemcode;
 
-	/**
-	 * Name:(2000000000,10)
-	 */
-	private String name;
+    /**
+     * Name:(2000000000,10)
+     */
+    private String name;
 
-	/**
-	 * Price:(2000000000,10)
-	 */
-	private String price;
+    /**
+     * Price:(2000000000,10)
+     */
+    private String price;
 
-	/**
-	* Constractor
-	*/
-	public Item(){}
+    private int supplierCode;
 
-	/**
-	* Constractor
-	* @param <code>id</code>
-	*/
-	public Item(int id){
-		this.id = id;
-	}
+    /**
+     * Constractor
+     */
+    public Item() {
+    }
 
-	public int getId(){ return this.id; }
+    /**
+     * Constractor
+     *
+     * @param <code>id</code>
+     */
+    public Item(int id) {
+        this.id = id;
+    }
 
-	public void setId(int id){ this.id = id; }
+    public int getId() {
+        return this.id;
+    }
 
-	public String getItemcode(){ return this.itemcode; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setItemcode(String itemcode){ this.itemcode = itemcode; }
+    public String getItemcode() {
+        return this.itemcode;
+    }
 
-	public String getName(){ return this.name; }
+    public void setItemcode(String itemcode) {
+        this.itemcode = itemcode;
+    }
 
-	public void setName(String name){ this.name = name; }
+    public String getName() {
+        return this.name;
+    }
 
-	public String getPrice(){ return this.price; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setPrice(String price){ this.price = price; }
+    public String getPrice() {
+        return this.price;
+    }
 
-	public String toString(){
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[ItemVo:");
-		buffer.append(" id: ");
-		buffer.append(id);
-		buffer.append(" itemcode: ");
-		buffer.append(itemcode);
-		buffer.append(" name: ");
-		buffer.append(name);
-		buffer.append(" price: ");
-		buffer.append(price);
-		buffer.append("]");
-		return buffer.toString();
-	}
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[ItemVo:");
+        buffer.append(" id: ");
+        buffer.append(id);
+        buffer.append(" itemcode: ");
+        buffer.append(itemcode);
+        buffer.append(" name: ");
+        buffer.append(name);
+        buffer.append(" price: ");
+        buffer.append(price);
+        buffer.append("]");
+        return buffer.toString();
+    }
+
+    public int getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(int supplierCode) {
+        this.supplierCode = supplierCode;
+    }
 
 }

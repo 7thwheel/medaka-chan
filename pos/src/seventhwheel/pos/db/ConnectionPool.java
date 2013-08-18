@@ -22,11 +22,11 @@ public class ConnectionPool {
     loadJdbcDriver();
 
     String datasource = getDataSource();
-    System.out.println(datasource);
 
     if (connection == null) {
       try {
         connection = DriverManager.getConnection(datasource);
+        System.out.println(datasource);
       } catch (SQLException e) {
         throw new RuntimeException(e);
       }
