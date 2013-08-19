@@ -66,8 +66,20 @@ public class RegisterItemController implements Initializable {
     if (item != null) {
       txtItemName.setText(item.getName());
       txtPrice.setText(item.getPrice());
-      Suppliers suppliers = new Suppliers(item.getSupplierCode());
-      cobSuppliers.setValue(suppliers);
+
+      if (item.getSupplierCode() == 0) {
+          cobSuppliers.setValue(null);
+      } else {
+          Suppliers suppliers = new Suppliers(item.getSupplierCode());
+          cobSuppliers.setValue(suppliers);
+      }
+
+      if (item.getBumonCode() == 0) {
+          cobBumon.setValue(null);
+      } else {
+          Bumon bumon = new Bumon(item.getBumonCode());
+          cobBumon.setValue(bumon);
+      }
     } else {
       txtItemName.clear();
       txtPrice.clear();
@@ -117,16 +129,21 @@ public class RegisterItemController implements Initializable {
     try {
         if (item == null) {
             try (Statement stmt2 = con.createStatement()) {
-              String sql = "INSERT INTO Item (ItemCode, Name, Price, SupplierCode) VALUES ('%s', '%s', '%s', '%s');";
+              String sql = "INSERT INTO Item (ItemCode, Name, Price, SupplierCode, BumonCode) VALUES ('%s', '%s', '%s', %s, %s);";
               stmt2.executeUpdate(String.format(
-                      sql, itemCode, txtItemName.getText(), txtPrice.getText(), cobSuppliers.getValue().getSuppliercode()));
+                      sql, itemCode, txtItemName.getText(), txtPrice.getText(),
+                      cobSuppliers.getValue().getSuppliercode(),
+                      cobBumon.getValue().getBumoncode()));
             }
           } else {
             try (Statement stmt2 = con.createStatement()) {
-              String sql = "UPDATE Item SET Name='%s', Price='%s', SupplierCode=%s WHERE ItemCode='%s';";
+              String sql = "UPDATE Item SET Name='%s', Price='%s', SupplierCode=%s, BumonCode=%s WHERE ItemCode='%s';";
               stmt2.executeUpdate(
                       String.format(
-                              sql, txtItemName.getText(), txtPrice.getText(), cobSuppliers.getValue().getSuppliercode(), itemCode));
+                              sql, txtItemName.getText(), txtPrice.getText(),
+                              cobSuppliers.getValue().getSuppliercode(),
+                              cobBumon.getValue().getBumoncode(),
+                              itemCode));
             }
           }
     } catch (SQLException e) {
@@ -162,6 +179,11 @@ public class RegisterItemController implements Initializable {
 //    }
 
     txtBarCode.requestFocus();
+    txtBarCode.clear();
+    txtItemName.clear();
+    txtPrice.clear();
+    cobSuppliers.setValue(null);
+    cobBumon.setValue(null);
   }
 
   /**
@@ -251,6 +273,7 @@ public class RegisterItemController implements Initializable {
         item.setName(rs.getString("Name"));
         item.setPrice(rs.getString("Price"));
         item.setSupplierCode(rs.getInt("SupplierCode"));
+        item.setBumonCode(rs.getInt("BumonCode"));
         items.add(item);
       }
 

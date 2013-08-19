@@ -39,6 +39,8 @@ public class Item implements Serializable {
 
     private int supplierCode;
 
+    private int bumonCode;
+
     /**
      * Constractor
      */
@@ -107,6 +109,14 @@ public class Item implements Serializable {
 
     public void setSupplierCode(int supplierCode) {
         this.supplierCode = supplierCode;
+    }
+
+    public int getBumonCode() {
+        return bumonCode;
+    }
+
+    public void setBumonCode(int bumonCode) {
+        this.bumonCode = bumonCode;
     }
 
 }
