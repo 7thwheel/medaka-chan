@@ -83,6 +83,8 @@ public class RegisterItemController implements Initializable {
     } else {
       txtItemName.clear();
       txtPrice.clear();
+      cobSuppliers.setValue(null);
+      cobBumon.setValue(null);
     }
 
     indicator.setVisible(item != null);
