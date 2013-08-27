@@ -12,7 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,7 +25,6 @@ public class PosController implements Initializable {
     public TextField txtBarCode;
     public TextField txtItemName;
     public TextField txtPrice;
-    public Button btnRegisterItem;
     public BorderPane borderPane;
     public Label lblTotalAmount;
 
@@ -66,10 +64,24 @@ public class PosController implements Initializable {
     }
 
     @FXML
+    private void handleBtnRegisterAction(ActionEvent event) {
+      //FIXME
+    }
+
+    @FXML
     private void handleBtnClearAction(ActionEvent event) {
         initQuantity();
         txtBarCode.clear();
         txtBarCode.requestFocus();
+    }
+
+    @FXML
+    private void handleBtnCancelAction(ActionEvent event) {
+        initQuantity();
+        initTotalAmount();
+        txtBarCode.clear();
+        txtBarCode.requestFocus();
+        table.getItems().clear();
     }
 
     @FXML
@@ -108,6 +120,11 @@ public class PosController implements Initializable {
     void sumTotalAmount(int amount) {
         totalAmount = BigDecimal.valueOf(totalAmount).add(BigDecimal.valueOf(amount)).intValue();
         totalAmountProperty.set(String.format("%,d", totalAmount));
+    }
+
+    void initTotalAmount() {
+      totalAmount = 0;
+      totalAmountProperty.set("0");
     }
 
 }

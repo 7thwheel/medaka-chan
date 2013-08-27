@@ -14,11 +14,14 @@
       <children>
         <VBox fx:id="bodyPos" spacing="10.0">
           <children>
-            <HBox alignment="CENTER_LEFT" prefWidth="200.0">
-              <VBox.margin>
-                <Insets />
-              </VBox.margin>
-            </HBox>
+            <BorderPane prefWidth="200.0">
+              <left>
+                <Button fx:id="btnRegister" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterAction" text="次の会計" />
+              </left>
+              <right>
+                <Button fx:id="btnCancel" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnCancelAction" text="中止" />
+              </right>
+            </BorderPane>
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" />
