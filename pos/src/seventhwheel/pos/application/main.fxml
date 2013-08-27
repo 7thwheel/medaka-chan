@@ -29,13 +29,16 @@
         <StackPane fx:id="rootPane" />
       </center>
       <top>
-        <HBox id="btnRegisterItem" alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
+        <HBox id="btnRegisterItem" spacing="10.0" styleClass="header">
           <children>
             <VBox>
               <children>
                 <Label styleClass="header, title" text="店っこくちない専用POSシステム" />
                 <Label styleClass="header, systemname" text="めだかちゃん" />
               </children>
+              <padding>
+                <Insets right="20.0" />
+              </padding>
             </VBox>
             <Button fx:id="btnRegisterItem" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品を登録する" />
           </children>
