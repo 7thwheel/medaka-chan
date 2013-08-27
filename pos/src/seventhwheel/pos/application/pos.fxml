@@ -15,9 +15,6 @@
         <VBox fx:id="bodyPos" spacing="10.0">
           <children>
             <HBox alignment="CENTER_LEFT" prefWidth="200.0">
-              <children>
-                <Button id="btnRegistItem" fx:id="btnRegisterItem" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品登録画面へ" />
-              </children>
               <VBox.margin>
                 <Insets />
               </VBox.margin>

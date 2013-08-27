@@ -1,6 +1,5 @@
 package seventhwheel.pos.controller;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
@@ -9,15 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
-import javafx.animation.TranslateTransitionBuilder;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,9 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
-import javafx.util.Duration;
-import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.ItemSaleModel;
 
@@ -118,47 +108,6 @@ public class PosController implements Initializable {
     void sumTotalAmount(int amount) {
         totalAmount = BigDecimal.valueOf(totalAmount).add(BigDecimal.valueOf(amount)).intValue();
         totalAmountProperty.set(String.format("%,d", totalAmount));
-    }
-
-    @FXML
-    private void handleBtnRegisterItem(ActionEvent event) {
-        btnRegisterItem.setDisable(true);
-        final Region root;
-        try {
-            root = FXMLLoader.load(PosApplication.class.getResource("RegisterItem.fxml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        root.prefHeightProperty().bind(borderPane.heightProperty());
-        root.prefWidthProperty().bind(borderPane.widthProperty());
-
-        MainController.add(root);
-
-        double windowWidth = root.getScene().getWindow().getWidth();
-
-        TranslateTransition translateOut = TranslateTransitionBuilder.create()
-                .node(borderPane)
-                .duration(Duration.millis(600))
-                .fromX(0)
-                .toX(-windowWidth)
-                .build();
-        TranslateTransition translateIn = TranslateTransitionBuilder.create()
-                .node(root)
-                .duration(Duration.millis(600))
-                .fromX(windowWidth)
-                .toX(0)
-                .build();
-
-        translateOut.setOnFinished(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                MainController.remove(borderPane);
-            }
-        });
-
-        new ParallelTransition(translateOut, translateIn).play();
     }
 
 }

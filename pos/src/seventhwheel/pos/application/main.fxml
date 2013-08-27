@@ -29,7 +29,7 @@
         <StackPane fx:id="rootPane" />
       </center>
       <top>
-        <HBox styleClass="header">
+        <HBox id="btnRegisterItem" alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
           <children>
             <VBox>
               <children>
@@ -37,6 +37,7 @@
                 <Label styleClass="header, systemname" text="めだかちゃん" />
               </children>
             </VBox>
+            <Button fx:id="btnRegisterItem" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品を登録する" />
           </children>
           <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
