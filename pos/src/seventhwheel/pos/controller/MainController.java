@@ -63,6 +63,9 @@ public class MainController implements Initializable {
     @FXML
     private void handleBtnRegisterItem(ActionEvent event) {
         final Node pos = rootPane.getChildren().get(0);
+        if (pos.getId().equals("borderPaneRegister")) {
+          return;
+        }
 
         final Region registerItem;
         try {
