@@ -2,6 +2,8 @@ package seventhwheel.pos.model;
 
 public class ItemSaleModel {
 
+    private String itemCode;
+
     private String itemName;
 
     private String price;
@@ -10,11 +12,20 @@ public class ItemSaleModel {
 
     private String amount;
 
-    public ItemSaleModel(String itemName, String price, String quantity, String amount) {
-      setItemName(itemName);
-      setPrice(price);
-      setQuantity(quantity);
-      setAmount(amount);
+    public ItemSaleModel(String itemCode, String itemName, String price, String quantity, String amount) {
+        setItemCode(itemCode);
+        setItemName(itemName);
+        setPrice(price);
+        setQuantity(quantity);
+        setAmount(amount);
+    }
+
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
     public String getItemName() {
@@ -42,10 +53,10 @@ public class ItemSaleModel {
     }
 
     public String getQuantity() {
-      return quantity;
+        return quantity;
     }
 
     public void setQuantity(String quantity) {
-      this.quantity = quantity;
+        this.quantity = quantity;
     }
 }
