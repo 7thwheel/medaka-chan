@@ -151,34 +151,6 @@ public class RegisterItemController implements Initializable {
     } catch (SQLException e) {
         throw new RuntimeException(e);
     }
-//    try (Statement stmt = con.createStatement()) {
-//      String sql = "SELECT * FROM Item where ItemCode = '%s';";
-//      String itemCode = txtBarCode.getText();
-//      ResultSet rs = stmt.executeQuery(String.format(sql, itemCode));
-//
-//      List<Item> items = new ArrayList<>();
-//      while (rs.next()) {
-//        Item item = new Item();
-//        item.setItemcode(rs.getString("ItemCode"));
-//        item.setName(rs.getString("Name"));
-//        item.setPrice(rs.getString("Price"));
-//        items.add(item);
-//      }
-//      if (items.isEmpty()) {
-//        try (Statement stmt2 = con.createStatement()) {
-//          sql = "INSERT INTO Item (ItemCode, Name, Price) VALUES ('%s', '%s', '%s');";
-//          stmt2.executeUpdate(String.format(sql, itemCode, txtItemName.getText(), txtPrice.getText()));
-//        }
-//      } else {
-//        try (Statement stmt2 = con.createStatement()) {
-//          sql = "UPDATE Item SET Name='%s', Price='%s' WHERE ItemCode='%s';";
-//          stmt2.executeUpdate(String.format(sql, txtItemName.getText(), txtPrice.getText(), itemCode));
-//        }
-//      }
-//
-//    } catch (SQLException e) {
-//      throw new RuntimeException(e);
-//    }
 
     txtBarCode.requestFocus();
     txtBarCode.clear();
