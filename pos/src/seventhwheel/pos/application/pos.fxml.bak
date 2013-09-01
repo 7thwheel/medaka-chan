@@ -14,27 +14,30 @@
       <children>
         <VBox fx:id="bodyPos" spacing="10.0">
           <children>
-            <BorderPane prefWidth="200.0">
-              <left>
-                <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#handleBtnRegisterAction" text="次の会計" />
-              </left>
-              <right>
-                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleBtnCancelAction" text="中止" />
-              </right>
-            </BorderPane>
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" />
-                <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" text="クリア" />
+                <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" styleClass="clear-button" text="クリア" />
               </children>
             </HBox>
             <VBox id="" spacing="3.0" styleClass="box" VBox.vgrow="ALWAYS">
               <children>
-                <HBox spacing="5.0">
+                <HBox alignment="CENTER_LEFT" spacing="5.0">
                   <children>
                     <Label text="合計金額" />
-                    <Label fx:id="lblTotalAmount" text="0" />
+                    <Label fx:id="lblTotalAmount" alignment="CENTER_RIGHT" prefWidth="90.0" text="0" />
                     <Label text="円" />
+                    <BorderPane HBox.hgrow="ALWAYS">
+                      <left>
+                        <Button fx:id="btnRegister" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterAction" styleClass="register-button" text="次の会計" />
+                      </left>
+                      <padding>
+                        <Insets left="10.0" />
+                      </padding>
+                      <right>
+                        <Button fx:id="btnCancel" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnCancelAction" styleClass="cancel-button" text="中止" />
+                      </right>
+                    </BorderPane>
                   </children>
                 </HBox>
                 <TableView fx:id="table" VBox.vgrow="ALWAYS">

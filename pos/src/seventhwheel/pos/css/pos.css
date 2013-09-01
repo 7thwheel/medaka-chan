@@ -42,7 +42,7 @@
 	-fx-background-color: white;
 	-fx-background-radius: 10;
 	-fx-padding: 20 20 20 20;
-	-fx-effect: dropshadow(three-pass-box, black, 12, 0.1, 3, 3);
+	-fx-effect: dropshadow(three-pass-box, black, 4, 0.1, 1, 1);
 }
 
 .footer {
@@ -58,6 +58,36 @@
 	-fx-font-style: italic;
 	-fx-font-weight: bold;
 }
+
+/******************************************************
+ *
+ * 会計登録ボタン
+ *
+ *****************************************************/
+ .register-button {
+    -fx-background-color: linear-gradient(derive(green, 80%) 0%, green 100%);
+    -fx-text-fill: white;
+ }
+
+/******************************************************
+ *
+ * キャンセルボタン
+ *
+ *****************************************************/
+ .cancel-button {
+	-fx-background-color: linear-gradient(derive(rgb(209, 55, 37), 40%) 0%, derive(rgb(209, 55, 37), -10%) 100%);
+    -fx-text-fill: white;
+ }
+
+/******************************************************
+ *
+ * キャンセルボタン
+ *
+ *****************************************************/
+ .clear-button {
+	-fx-background-color: linear-gradient(derive(rgb(47, 123, 236), 40%) 0%, derive(rgb(47, 123, 236), -10%) 100%);
+    -fx-text-fill: white;
+ }
 
 /******************************************************
  *
