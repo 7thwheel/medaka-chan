@@ -9,7 +9,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 import seventhwheel.pos.db.ConnectionPool;
-import seventhwheel.pos.model.Bumon;
 import seventhwheel.pos.model.Suppliers;
 
 public class SuppliersComboBox extends ComboBox<Suppliers> {
