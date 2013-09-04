@@ -18,8 +18,8 @@
               <children>
                 <HBox alignment="BASELINE_LEFT">
                   <children>
-                    <Label text="合計" />
-                    <Label fx:id="lblTotalAmount" alignment="CENTER_RIGHT" prefWidth="240.0" styleClass="total-amount-label" text="0">
+                    <Label alignment="CENTER_RIGHT" prefWidth="60.0" text="合計" />
+                    <Label fx:id="lblTotalAmount" alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="total-amount-label" text="0">
                       <HBox.margin>
                         <Insets right="10.0" />
                       </HBox.margin>
@@ -38,6 +38,24 @@
                     <Button fx:id="btnCancel" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnCancelAction" styleClass="cancel-button" text="中止" BorderPane.alignment="CENTER" />
                   </right>
                 </BorderPane>
+              </children>
+              <padding>
+                <Insets bottom="5.0" />
+              </padding>
+            </HBox>
+            <HBox fx:id="hboxChange" alignment="CENTER_LEFT" spacing="5.0" styleClass="box, big-font" visible="false">
+              <children>
+                <HBox alignment="BASELINE_LEFT">
+                  <children>
+                    <Label alignment="CENTER_RIGHT" prefWidth="60.0" text="おつり" />
+                    <Label id="lblTotalAmount" fx:id="lblChange" alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="total-amount-label" text="0">
+                      <HBox.margin>
+                        <Insets right="10.0" />
+                      </HBox.margin>
+                    </Label>
+                    <Label text="円" />
+                  </children>
+                </HBox>
               </children>
               <padding>
                 <Insets bottom="5.0" />

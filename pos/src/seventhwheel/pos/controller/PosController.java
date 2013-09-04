@@ -22,6 +22,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Item;
 import seventhwheel.pos.model.ItemSaleModel;
@@ -36,6 +38,9 @@ public class PosController implements Initializable {
     public Label lblTotalAmount;
     public Button btnRegister;
     public Button btnCancel;
+    public VBox bodyPos;
+    public HBox hboxChange;
+    public Label lblChange;
 
     public TableView<ItemSaleModel> table;
     public TableColumn<ItemSaleModel, String> colItemName;
@@ -80,6 +85,19 @@ public class PosController implements Initializable {
         });
 
         table.getItems().clear();
+        hideChange();
+    }
+
+    private void hideChange() {
+        bodyPos.getChildren().remove(hboxChange);
+    }
+
+    private void showChange() {
+        if (bodyPos.getChildren().contains(hboxChange)) {
+            return;
+        }
+
+        bodyPos.getChildren().add(1, hboxChange);
     }
 
     @FXML
@@ -143,10 +161,15 @@ public class PosController implements Initializable {
         txtBarCode.clear();
         txtBarCode.requestFocus();
         table.getItems().clear();
+        hideChange();
     }
 
     @FXML
     private void handleBtnClearAction(ActionEvent event) {
+        clearBarCode();
+    }
+
+    private void clearBarCode() {
         initQuantity();
         txtBarCode.clear();
         txtBarCode.requestFocus();
@@ -160,6 +183,22 @@ public class PosController implements Initializable {
     @FXML
     private void handleTxtBarCodeAction(ActionEvent event) {
         String itemCode = txtBarCode.getText();
+
+        // Subtraction
+        if (itemCode.matches("[0-9]+-$")) {
+            int input = Integer.parseInt(itemCode.replaceAll("-", ""));
+            if (input > 0 && totalAmount > 0 && input - totalAmount > 0) {
+                showChange();
+                lblChange.setText(String.format("%,d", input - totalAmount));
+            }
+
+            clearBarCode();
+            return;
+        }
+
+        hideChange();
+
+        // Quantity
         if (itemCode.matches("^[0-9]+\\*[0-9]+")) {
             String[] split = itemCode.split("\\*");
             quantity = Integer.valueOf(split[0]);
