@@ -29,9 +29,10 @@
                 <BumonComboBox fx:id="cobBumon" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="txtItemName" onAction="#handleTxtItemNameAction" prefWidth="400.0" promptText="商品名を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                <HBox fx:id="hboxIndicator" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
                   <children>
                     <Label fx:id="indicator" styleClass="indicator" text="登録済みデータを編集します" />
+                    <Label fx:id="successMessage" styleClass="indicator" text="登録しました" />
                   </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
