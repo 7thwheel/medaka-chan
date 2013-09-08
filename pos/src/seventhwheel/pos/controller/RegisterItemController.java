@@ -27,8 +27,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
-import seventhwheel.pos.constants.UserAction;
-import seventhwheel.pos.control.MessageBox;
 import seventhwheel.pos.control.NumberTextField;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Bumon;
