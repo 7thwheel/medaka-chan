@@ -1,7 +1,16 @@
 package seventhwheel.pos.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.animation.ParallelTransition;
@@ -19,12 +28,15 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
+import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.sql.Sql;
 
 public class MainController implements Initializable {
 
     public BorderPane borderPane;
     public StackPane rootPane;
     public Button btnRegisterItem;
+    public Button btnReport;
 
     private static MainController mainController;
 
@@ -104,5 +116,53 @@ public class MainController implements Initializable {
 
         new ParallelTransition(translateOut, translateIn).play();
     }
+
+  @FXML
+  private void handleBtnReport(ActionEvent event) {
+    String yyyymm = new SimpleDateFormat("yyyy-MM").format(new Date());
+    File file = new File(String.format("report_%s.txt", yyyymm));
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+      Connection con = ConnectionPool.getConnection();
+      try (PreparedStatement ps = con.prepareStatement(Sql.get("report-total.sql"))) {
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+          String date = rs.getString(1);
+          String total = rs.getString(2);
+
+          System.out.println(String.format("%s\t%s", date, total));
+          bw.write(String.format("%s\t%s\r\n", date, total));
+
+          reportDetail(date, bw);
+        }
+
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  void reportDetail(String date, BufferedWriter bw) {
+    Connection con = ConnectionPool.getConnection();
+    try (PreparedStatement ps = con.prepareStatement(Sql.get("report-detail.sql"))) {
+      ps.setString(1, date);
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        String supplierCode = rs.getString(2);
+        String supplierName = rs.getString(3);
+        String total = rs.getString(4);
+        System.out.println(String.format("%s\t%s\t%s\t%s", date, supplierCode, supplierName, total));
+        bw.write(String.format("%s\t%s\t%s\t%s\r\n", date, supplierCode, supplierName, total));
+      }
+
+    } catch (SQLException | IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
 }
