@@ -125,13 +125,13 @@ public class MainController implements Initializable {
 
       Connection con = ConnectionPool.getConnection();
       try (PreparedStatement ps = con.prepareStatement(Sql.get("report-total.sql"))) {
+        ps.setString(1, yyyymm);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
           String date = rs.getString(1);
           String total = rs.getString(2);
 
-          System.out.println(String.format("%s\t%s", date, total));
           bw.write(String.format("%s\t%s\r\n", date, total));
 
           reportDetail(date, bw);
@@ -156,7 +156,7 @@ public class MainController implements Initializable {
         String supplierCode = rs.getString(2);
         String supplierName = rs.getString(3);
         String total = rs.getString(4);
-        System.out.println(String.format("%s\t%s\t%s\t%s", date, supplierCode, supplierName, total));
+
         bw.write(String.format("%s\t%s\t%s\t%s\r\n", date, supplierCode, supplierName, total));
       }
 
