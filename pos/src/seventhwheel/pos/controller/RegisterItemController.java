@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -57,6 +59,27 @@ public class RegisterItemController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         clearIndicator();
         errorMessage.setVisible(false);
+
+        txtPrice.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+          @Override
+          public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue, Boolean newValue) {
+            if (!newValue) {
+              String price = txtPrice.getText();
+              price = price.replaceAll("０", "0");
+              price = price.replaceAll("１", "1");
+              price = price.replaceAll("２", "2");
+              price = price.replaceAll("３", "3");
+              price = price.replaceAll("４", "4");
+              price = price.replaceAll("５", "5");
+              price = price.replaceAll("６", "6");
+              price = price.replaceAll("７", "7");
+              price = price.replaceAll("８", "8");
+              price = price.replaceAll("９", "9");
+              txtPrice.setText(price);
+            }
+          }
+        });
     }
 
     @FXML
