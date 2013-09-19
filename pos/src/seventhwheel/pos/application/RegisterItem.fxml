@@ -19,16 +19,16 @@
             <GridPane hgap="10.0" styleClass="box" vgap="20.0">
               <children>
                 <Label alignment="CENTER_RIGHT" text="バーコード" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Label alignment="CENTER_RIGHT" text="商品名" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                 <Label alignment="CENTER_RIGHT" text="単価" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                <NumberTextField fx:id="txtPrice" disable="false" onAction="#handleTxtPriceAction" prefWidth="400.0" promptText="単価を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label alignment="CENTER_RIGHT" text="仕入先" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                <SuppliersComboBox fx:id="cobSuppliers" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <Label text="部門" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                <BumonComboBox fx:id="cobBumon" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label fx:id="lblBarCode" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="txtItemName" onAction="#handleTxtItemNameAction" prefWidth="400.0" promptText="商品名を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <NumberTextField fx:id="txtPrice" disable="false" onAction="#handleTxtPriceAction" prefWidth="400.0" promptText="単価を入力してください" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <SuppliersComboBox fx:id="cobSuppliers" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <BumonComboBox fx:id="cobBumon" disable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <HBox fx:id="hboxIndicator" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
                   <children>
                     <Label fx:id="indicator" styleClass="indicator" text="登録済みデータを編集します" />

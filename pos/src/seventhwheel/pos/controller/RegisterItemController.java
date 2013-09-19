@@ -142,8 +142,7 @@ public class RegisterItemController implements Initializable {
         if (txtPrice.getText().isEmpty()) {
             return;
         }
-        btnRegister.setDisable(false);
-        btnRegister.requestFocus();
+        cobSuppliers.requestFocus();
     }
 
     /**
