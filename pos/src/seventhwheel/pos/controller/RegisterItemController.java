@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.FadeTransitionBuilder;
 import javafx.animation.ParallelTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
@@ -56,6 +59,7 @@ public class RegisterItemController implements Initializable {
     void clearIndicator() {
         hboxIndicator.getChildren().remove(indicator);
         hboxIndicator.getChildren().remove(successMessage);
+        errorMessage.setVisible(false);
     }
 
     void imeOff() {
@@ -175,6 +179,26 @@ public class RegisterItemController implements Initializable {
         hboxIndicator.getChildren().add(indicator);
     }
 
+    void showSuccessMessage() {
+      showIndicator(successMessage);
+
+      FadeTransition fadeIn = FadeTransitionBuilder.create()
+          .node(successMessage)
+          .duration(Duration.seconds(0.2))
+          .fromValue(0.0)
+          .toValue(1.0)
+          .build();
+      FadeTransition fadeOut = FadeTransitionBuilder.create()
+          .node(successMessage)
+          .delay(Duration.seconds(1.0))
+          .duration(Duration.seconds(1.0))
+          .fromValue(1.0)
+          .toValue(0.0)
+          .build();
+      SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
+      fade.play();
+    }
+
     @FXML
     private void handleTxtItemNameAction(ActionEvent event) {
         if (txtItemName.getText().isEmpty()) {
@@ -240,7 +264,7 @@ public class RegisterItemController implements Initializable {
         txtPrice.clear();
         cobSuppliers.setValue(null);
         cobBumon.setValue(null);
-        showIndicator(successMessage);
+        showSuccessMessage();
     }
 
     /**
