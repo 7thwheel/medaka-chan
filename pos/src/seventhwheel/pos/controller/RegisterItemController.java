@@ -1,5 +1,8 @@
 package seventhwheel.pos.controller;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -55,16 +58,50 @@ public class RegisterItemController implements Initializable {
         hboxIndicator.getChildren().remove(successMessage);
     }
 
+    void imeOff() {
+      try {
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_HIRAGANA);
+        robot.keyPress(KeyEvent.VK_HIRAGANA);
+        robot.keyPress(KeyEvent.VK_INPUT_METHOD_ON_OFF);
+      } catch (AWTException e) {
+        /* ignore exception */
+      }
+    }
+
+    void imeOn() {
+      try {
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_HIRAGANA);
+        robot.keyPress(KeyEvent.VK_HIRAGANA);
+      } catch (AWTException e) {
+        /* ignore exception */
+      }
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        imeOff();
         clearIndicator();
         errorMessage.setVisible(false);
+
+        txtBarCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+          @Override
+          public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue, Boolean newValue) {
+            if (newValue) {
+              imeOff();
+            }
+          }
+        });
 
         txtPrice.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
           @Override
           public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue, Boolean newValue) {
-            if (!newValue) {
+            if (newValue) {
+              imeOff();
+            } else {
               String price = txtPrice.getText();
               price = price.replaceAll("０", "0");
               price = price.replaceAll("１", "1");
@@ -77,6 +114,16 @@ public class RegisterItemController implements Initializable {
               price = price.replaceAll("８", "8");
               price = price.replaceAll("９", "9");
               txtPrice.setText(price);
+            }
+          }
+        });
+
+        txtItemName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+          @Override
+          public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue, Boolean newValue) {
+            if (newValue) {
+              imeOn();
             }
           }
         });
@@ -133,6 +180,7 @@ public class RegisterItemController implements Initializable {
         if (txtItemName.getText().isEmpty()) {
             return;
         }
+
         txtPrice.setDisable(false);
         txtPrice.requestFocus();
     }
