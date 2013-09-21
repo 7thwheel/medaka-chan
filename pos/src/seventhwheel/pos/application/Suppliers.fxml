@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" fx:id="borderPane" styleClass="root, body" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.SuppliersController">
+  <center>
+    <StackPane>
+      <children>
+        <VBox spacing="10.0">
+          <children>
+            <Button fx:id="btnBack" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
+            <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
+              <children>
+                <TextField fx:id="txtName" prefWidth="200.0" promptText="仕入先の名称を入力してください" HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnRegister" mnemonicParsing="false" styleClass="register-button" text="登録" />
+              </children>
+            </HBox>
+            <VBox styleClass="box">
+              <children>
+                <TableView fx:id="table">
+                  <columns>
+                    <TableColumn prefWidth="100.0" text="コード" />
+                    <TableColumn minWidth="100.0" prefWidth="400.0" text="仕入先" />
+                  </columns>
+                </TableView>
+              </children>
+            </VBox>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </center>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</BorderPane>

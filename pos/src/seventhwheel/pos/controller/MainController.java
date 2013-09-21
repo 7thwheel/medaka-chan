@@ -23,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -37,6 +38,8 @@ public class MainController implements Initializable {
     public StackPane rootPane;
     public Button btnRegisterItem;
     public Button btnReport;
+    public MenuItem menuItems;
+    public MenuItem menuSuppliers;
 
     private static MainController mainController;
 
@@ -73,7 +76,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void handleBtnRegisterItem(ActionEvent event) {
+    private void handleMenuItems(ActionEvent event) {
         final Node pos = rootPane.getChildren().get(0);
         if (pos.getId().equals("borderPaneRegister")) {
           return;
@@ -117,8 +120,53 @@ public class MainController implements Initializable {
         new ParallelTransition(translateOut, translateIn).play();
     }
 
+    @FXML
+    private void handleMenuSuppliers(ActionEvent event) {
+        final Node pos = rootPane.getChildren().get(0);
+        if (pos.getId().equals("borderPaneRegister")) {
+          return;
+        }
+
+        final Region registerItem;
+        try {
+            registerItem = FXMLLoader.load(PosApplication.class.getResource("Suppliers.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        registerItem.prefHeightProperty().bind(borderPane.heightProperty());
+        registerItem.prefWidthProperty().bind(borderPane.widthProperty());
+
+        MainController.add(registerItem);
+
+        double windowWidth = registerItem.getScene().getWindow().getWidth();
+
+        TranslateTransition translateOut = TranslateTransitionBuilder.create()
+                .node(pos)
+                .duration(Duration.millis(600))
+                .fromX(0)
+                .toX(-windowWidth)
+                .build();
+        TranslateTransition translateIn = TranslateTransitionBuilder.create()
+                .node(registerItem)
+                .duration(Duration.millis(600))
+                .fromX(windowWidth)
+                .toX(0)
+                .build();
+
+        translateOut.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                MainController.remove(pos);
+            }
+        });
+
+        new ParallelTransition(translateOut, translateIn).play();
+    }
+
   @FXML
-  private void handleBtnReport(ActionEvent event) {
+  private void handleMenuReportTotal(ActionEvent event) {
     String yyyymm = new SimpleDateFormat("yyyy-MM").format(new Date());
     File file = new File(String.format("report_%s.txt", yyyymm));
     try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {

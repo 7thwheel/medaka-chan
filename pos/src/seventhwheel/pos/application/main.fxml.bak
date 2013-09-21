@@ -36,8 +36,25 @@
                 <Label styleClass="header, title" text="店っこくちない専用POSシステム" />
                 <Label styleClass="header, systemname" text="めだかちゃん" />
               </children>
+              <padding>
+                <Insets right="20.0" />
+              </padding>
             </VBox>
-            <Button fx:id="btnRegisterItem" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterItem" text="商品を登録する" />
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="登録">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleMenuItems" text="商品情報" fx:id="menuItems" />
+                    <MenuItem mnemonicParsing="false" onAction="handleMenuSuppliers" text="仕入先情報" fx:id="menuSuppliers" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="レポート">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" fx:id="menuReportTotal" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
           </children>
           <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

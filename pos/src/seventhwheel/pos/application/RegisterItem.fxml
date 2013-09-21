@@ -16,6 +16,14 @@
       <children>
         <VBox fx:id="bodyRegisterItem" spacing="20.0">
           <children>
+            <HBox alignment="CENTER_LEFT">
+              <children>
+                <Button id="btnRegistItem" fx:id="btnBack" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
+              </children>
+              <VBox.margin>
+                <Insets />
+              </VBox.margin>
+            </HBox>
             <GridPane hgap="10.0" styleClass="box" vgap="20.0">
               <children>
                 <Label alignment="CENTER_RIGHT" text="バーコード" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
@@ -57,14 +65,6 @@
                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <HBox alignment="CENTER_LEFT">
-              <children>
-                <Button id="btnRegistItem" fx:id="btnBack" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
-              </children>
-              <VBox.margin>
-                <Insets />
-              </VBox.margin>
-            </HBox>
           </children>
         </VBox>
       </children>
