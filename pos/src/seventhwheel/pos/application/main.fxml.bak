@@ -30,7 +30,7 @@
           <children>
             <VBox fx:id="messageBar">
               <children>
-                <HBox id="hboxMessage" alignment="CENTER">
+                <HBox id="hboxMessage" alignment="CENTER" styleClass="message-br">
                   <children>
                     <Label id="lbllMessage" fx:id="lblMessage" text="message" HBox.hgrow="ALWAYS" />
                   </children>

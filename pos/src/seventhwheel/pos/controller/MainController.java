@@ -24,11 +24,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -43,10 +45,25 @@ public class MainController implements Initializable {
     public StackPane rootPane;
     public MenuItem menuItems;
     public MenuItem menuSuppliers;
-    public VBox messageBar;
-    public Label lblMessage;
 
-    private static MainController mainController;
+    static VBox messageBar;
+    static HBox messageContainer;
+    static Label lblMessage;
+    static MainController mainController;
+
+    static {
+        messageBar = new VBox();
+        messageContainer = new HBox();
+        lblMessage = new Label();
+
+        StackPane.setAlignment(messageBar, Pos.TOP_CENTER);
+        messageContainer.setAlignment(Pos.CENTER);
+        messageContainer.setPadding(new Insets(5));
+        messageContainer.getStyleClass().add("message-bar");
+
+        messageBar.getChildren().add(messageContainer);
+        messageContainer.getChildren().add(lblMessage);
+    }
 
     public static MainController getController() {
         return mainController;
@@ -78,7 +95,6 @@ public class MainController implements Initializable {
             throw new RuntimeException(e);
         }
         rootPane.getChildren().add(pos);
-        rootPane.getChildren().remove(messageBar);
     }
 
     @FXML
@@ -191,32 +207,7 @@ public class MainController implements Initializable {
           reportDetail(date, bw);
         }
 
-        lblMessage.setText("レポートを作成しました。");
-        rootPane.getChildren().add(messageBar);
-        StackPane.setAlignment(messageBar, Pos.TOP_CENTER);
-        FadeTransition fadeIn = FadeTransitionBuilder.create()
-                .node(messageBar)
-                .duration(Duration.seconds(0.2))
-                .fromValue(0.0)
-                .toValue(1.0)
-                .build();
-        FadeTransition fadeOut = FadeTransitionBuilder.create()
-                .node(messageBar)
-                .delay(Duration.seconds(1.2))
-                .duration(Duration.seconds(1.0))
-                .fromValue(1.0)
-                .toValue(0.0)
-                .build();
-        SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
-        fade.setOnFinished(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent arg0) {
-                rootPane.getChildren().remove(messageBar);
-            }
-        });
-
-        fade.play();
+        showMessageBar("レポートを作成しました");
       } catch (SQLException e) {
         throw new RuntimeException(e);
       }
@@ -243,6 +234,34 @@ public class MainController implements Initializable {
     } catch (SQLException | IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static void showMessageBar(String message) {
+      lblMessage.setText(message);
+      add(messageBar);
+      FadeTransition fadeIn = FadeTransitionBuilder.create()
+              .node(messageBar)
+              .duration(Duration.seconds(0.2))
+              .fromValue(0.0)
+              .toValue(1.0)
+              .build();
+      FadeTransition fadeOut = FadeTransitionBuilder.create()
+              .node(messageBar)
+              .delay(Duration.seconds(1.2))
+              .duration(Duration.seconds(1.0))
+              .fromValue(1.0)
+              .toValue(0.0)
+              .build();
+      SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
+      fade.setOnFinished(new EventHandler<ActionEvent>() {
+
+          @Override
+          public void handle(ActionEvent arg0) {
+              remove(messageBar);
+          }
+      });
+
+      fade.play();
   }
 
 }
