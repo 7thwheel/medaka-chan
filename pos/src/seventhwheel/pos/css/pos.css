@@ -130,7 +130,11 @@
  *
  *****************************************************/
 .message-bar {
-    -fx-background-color: gold;
+    -fx-background-color: lightgoldenrodyellow;
+}
+
+.message-bar .message {
+	-fx-text-fill: #505050;
 }
 
 /******************************************************

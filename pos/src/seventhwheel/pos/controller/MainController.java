@@ -60,6 +60,7 @@ public class MainController implements Initializable {
         messageContainer.setAlignment(Pos.CENTER);
         messageContainer.setPadding(new Insets(5));
         messageContainer.getStyleClass().add("message-bar");
+        lblMessage.getStyleClass().add("message");
 
         messageBar.getChildren().add(messageContainer);
         messageContainer.getChildren().add(lblMessage);
