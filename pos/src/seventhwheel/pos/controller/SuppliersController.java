@@ -2,9 +2,13 @@ package seventhwheel.pos.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-
-import seventhwheel.pos.application.PosApplication;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -16,18 +20,43 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
+import seventhwheel.pos.application.PosApplication;
+import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.model.Suppliers;
 
 public class SuppliersController implements Initializable {
 
     public Button btnRegister;
     public Button btnBack;
     public Node borderPane;
+    public TextField txtName;
+
+    public TableView<Suppliers> table;
+    public TableColumn<Suppliers, String> colCode;
+    public TableColumn<Suppliers, String> colName;
+
+    enum Mode {
+        ADD,
+        MODIFY
+    }
+
+    Mode mode = Mode.ADD;
+    Suppliers selected;
 
    @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+       colCode.setCellValueFactory(
+               new PropertyValueFactory<Suppliers, String>("suppliercode"));
+       colName.setCellValueFactory(
+               new PropertyValueFactory<Suppliers, String>("name"));
 
+       updateTable();
     }
 
     @FXML
@@ -66,6 +95,69 @@ public class SuppliersController implements Initializable {
         });
 
         new ParallelTransition(translateOut, translateIn).play();
+    }
+
+    List<Suppliers> select() {
+        try (Statement stmt = ConnectionPool.getConnection().createStatement()) {
+            String sql = "SELECT * FROM Suppliers;";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            List<Suppliers> suppliers = new ArrayList<>();
+            while (rs.next()) {
+                Suppliers supplier = new Suppliers();
+                supplier.setSuppliercode(rs.getInt("SupplierCode"));
+                supplier.setName(rs.getString("Name"));
+                suppliers.add(supplier);
+            }
+
+            return suppliers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void updateTable() {
+        table.getItems().setAll(select());
+    }
+
+    @FXML
+    private void handleBtnRegisterAction(ActionEvent event) {
+        String sql = "";
+        if (mode == Mode.MODIFY) {
+            sql = "update Suppliers set name = ? where suppliercode = ?;";
+            try (PreparedStatement ps = ConnectionPool.getConnection().prepareStatement(sql)) {
+                ps.setString(1, txtName.getText());
+                ps.setInt(2, selected.getSuppliercode());
+                ps.executeUpdate();
+                mode = Mode.ADD;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            sql = "insert into Suppliers (name) values (?);";
+            try (PreparedStatement ps = ConnectionPool.getConnection().prepareStatement(sql)) {
+                ps.setString(1, txtName.getText());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        updateTable();
+        txtName.clear();
+        txtName.requestFocus();
+        MainController.showMessageBar("登録しました");
+    }
+
+    @FXML
+    private void handleBtnModifyAction(ActionEvent event) {
+        if (table.getSelectionModel().isEmpty()) {
+            return;
+        }
+
+        mode = Mode.MODIFY;
+        selected = table.getSelectionModel().getSelectedItem();
+        txtName.setText(selected.getName());
     }
 
 }

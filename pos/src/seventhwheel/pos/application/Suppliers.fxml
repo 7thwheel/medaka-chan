@@ -17,17 +17,18 @@
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
                 <TextField fx:id="txtName" prefWidth="200.0" promptText="仕入先の名称を入力してください" HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnRegister" mnemonicParsing="false" styleClass="register-button" text="登録" />
+                <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#handleBtnRegisterAction" styleClass="register-button" text="登録" />
               </children>
             </HBox>
-            <VBox styleClass="box">
+            <VBox spacing="10.0" styleClass="box">
               <children>
                 <TableView fx:id="table">
                   <columns>
-                    <TableColumn prefWidth="100.0" text="コード" />
-                    <TableColumn minWidth="100.0" prefWidth="400.0" text="仕入先" />
+                    <TableColumn prefWidth="100.0" text="コード" fx:id="colCode" />
+                    <TableColumn minWidth="100.0" prefWidth="400.0" text="仕入先" fx:id="colName" />
                   </columns>
                 </TableView>
+                <Button fx:id="btnModify" mnemonicParsing="false" onAction="#handleBtnModifyAction" text="編集" />
               </children>
             </VBox>
           </children>
