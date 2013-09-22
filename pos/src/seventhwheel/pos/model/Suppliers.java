@@ -60,8 +60,7 @@ public class Suppliers {
             return false;
         }
 
-        return getSuppliercode() == ((Suppliers) obj).getSuppliercode() &&
-                getName() == ((Suppliers) obj).getName();
+        return getSuppliercode() == ((Suppliers) obj).getSuppliercode();
     }
 
     public String toString() {

@@ -28,7 +28,7 @@ import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.db.ConnectionPool;
-import seventhwheel.pos.model.Suppliers;
+import seventhwheel.pos.model.SuppliersModel;
 
 public class SuppliersController implements Initializable {
 
@@ -37,9 +37,9 @@ public class SuppliersController implements Initializable {
     public Node borderPane;
     public TextField txtName;
 
-    public TableView<Suppliers> table;
-    public TableColumn<Suppliers, String> colCode;
-    public TableColumn<Suppliers, String> colName;
+    public TableView<SuppliersModel> table;
+    public TableColumn<SuppliersModel, String> colCode;
+    public TableColumn<SuppliersModel, String> colName;
 
     enum Mode {
         ADD,
@@ -47,14 +47,14 @@ public class SuppliersController implements Initializable {
     }
 
     Mode mode = Mode.ADD;
-    Suppliers selected;
+    SuppliersModel selected;
 
    @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
        colCode.setCellValueFactory(
-               new PropertyValueFactory<Suppliers, String>("suppliercode"));
+               new PropertyValueFactory<SuppliersModel, String>("suppliercode"));
        colName.setCellValueFactory(
-               new PropertyValueFactory<Suppliers, String>("name"));
+               new PropertyValueFactory<SuppliersModel, String>("name"));
 
        updateTable();
     }
@@ -97,14 +97,14 @@ public class SuppliersController implements Initializable {
         new ParallelTransition(translateOut, translateIn).play();
     }
 
-    List<Suppliers> select() {
+    List<SuppliersModel> select() {
         try (Statement stmt = ConnectionPool.getConnection().createStatement()) {
             String sql = "SELECT * FROM Suppliers;";
             ResultSet rs = stmt.executeQuery(sql);
 
-            List<Suppliers> suppliers = new ArrayList<>();
+            List<SuppliersModel> suppliers = new ArrayList<>();
             while (rs.next()) {
-                Suppliers supplier = new Suppliers();
+                SuppliersModel supplier = new SuppliersModel();
                 supplier.setSuppliercode(rs.getInt("SupplierCode"));
                 supplier.setName(rs.getString("Name"));
                 suppliers.add(supplier);
