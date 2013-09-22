@@ -13,10 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.FadeTransitionBuilder;
 import javafx.animation.ParallelTransition;
-import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.beans.value.ChangeListener;
@@ -53,12 +50,10 @@ public class RegisterItemController implements Initializable {
     public BorderPane borderPaneRegister;
     public HBox hboxIndicator;
     public Label indicator;
-    public Label successMessage;
     public Label errorMessage;
 
     void clearIndicator() {
         hboxIndicator.getChildren().remove(indicator);
-        hboxIndicator.getChildren().remove(successMessage);
         errorMessage.setVisible(false);
     }
 
@@ -180,23 +175,7 @@ public class RegisterItemController implements Initializable {
     }
 
     void showSuccessMessage() {
-      showIndicator(successMessage);
-
-      FadeTransition fadeIn = FadeTransitionBuilder.create()
-          .node(successMessage)
-          .duration(Duration.seconds(0.2))
-          .fromValue(0.0)
-          .toValue(1.0)
-          .build();
-      FadeTransition fadeOut = FadeTransitionBuilder.create()
-          .node(successMessage)
-          .delay(Duration.seconds(1.0))
-          .duration(Duration.seconds(1.0))
-          .fromValue(1.0)
-          .toValue(0.0)
-          .build();
-      SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
-      fade.play();
+        MainController.showMessageBar("登録しました");
     }
 
     @FXML
@@ -265,6 +244,7 @@ public class RegisterItemController implements Initializable {
         cobSuppliers.setValue(null);
         cobBumon.setValue(null);
         showSuccessMessage();
+        clearIndicator();
     }
 
     /**

@@ -18,7 +18,7 @@
           <children>
             <HBox alignment="CENTER_LEFT">
               <children>
-                <Button id="btnRegistItem" fx:id="btnBack" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
+                <Button id="btnRegistItem" fx:id="btnBack" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnBackAction" text="戻る" />
               </children>
               <VBox.margin>
                 <Insets />

@@ -40,7 +40,6 @@
                 <HBox fx:id="hboxIndicator" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
                   <children>
                     <Label fx:id="indicator" styleClass="indicator" text="登録済みデータを編集します" />
-                    <Label fx:id="successMessage" styleClass="indicator" text="登録しました" />
                   </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
