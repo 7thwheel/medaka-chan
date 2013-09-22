@@ -13,7 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.FadeTransitionBuilder;
 import javafx.animation.ParallelTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.event.ActionEvent;
@@ -21,12 +24,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.db.ConnectionPool;
@@ -36,10 +41,10 @@ public class MainController implements Initializable {
 
     public BorderPane borderPane;
     public StackPane rootPane;
-    public Button btnRegisterItem;
-    public Button btnReport;
     public MenuItem menuItems;
     public MenuItem menuSuppliers;
+    public VBox messageBar;
+    public Label lblMessage;
 
     private static MainController mainController;
 
@@ -73,6 +78,7 @@ public class MainController implements Initializable {
             throw new RuntimeException(e);
         }
         rootPane.getChildren().add(pos);
+        rootPane.getChildren().remove(messageBar);
     }
 
     @FXML
@@ -185,6 +191,32 @@ public class MainController implements Initializable {
           reportDetail(date, bw);
         }
 
+        lblMessage.setText("レポートを作成しました。");
+        rootPane.getChildren().add(messageBar);
+        StackPane.setAlignment(messageBar, Pos.TOP_CENTER);
+        FadeTransition fadeIn = FadeTransitionBuilder.create()
+                .node(messageBar)
+                .duration(Duration.seconds(0.2))
+                .fromValue(0.0)
+                .toValue(1.0)
+                .build();
+        FadeTransition fadeOut = FadeTransitionBuilder.create()
+                .node(messageBar)
+                .delay(Duration.seconds(1.2))
+                .duration(Duration.seconds(1.0))
+                .fromValue(1.0)
+                .toValue(0.0)
+                .build();
+        SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
+        fade.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                rootPane.getChildren().remove(messageBar);
+            }
+        });
+
+        fade.play();
       } catch (SQLException e) {
         throw new RuntimeException(e);
       }
