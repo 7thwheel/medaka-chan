@@ -26,22 +26,7 @@
         </VBox>
       </bottom>
       <center>
-        <StackPane fx:id="rootPane">
-          <children>
-            <VBox fx:id="messageBar">
-              <children>
-                <HBox id="hboxMessage" alignment="CENTER" styleClass="message-br">
-                  <children>
-                    <Label id="lbllMessage" fx:id="lblMessage" text="message" HBox.hgrow="ALWAYS" />
-                  </children>
-                  <padding>
-                    <Insets bottom="5.0" top="5.0" />
-                  </padding>
-                </HBox>
-              </children>
-            </VBox>
-          </children>
-        </StackPane>
+        <StackPane fx:id="rootPane" />
       </center>
       <top>
         <HBox id="btnRegisterItem" spacing="10.0" styleClass="header">
@@ -66,6 +51,7 @@
                 <Menu mnemonicParsing="false" text="レポート">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" fx:id="menuReportTotal" />
+                    <MenuItem mnemonicParsing="false" text="売上明細" fx:id="menuReportDetail" />
                   </items>
                 </Menu>
               </menus>

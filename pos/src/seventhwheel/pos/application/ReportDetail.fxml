@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" styleClass="root, body" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.ReportDetailController">
+  <center>
+    <StackPane>
+      <children>
+        <VBox prefWidth="100.0" spacing="10.0">
+          <children>
+            <HBox alignment="CENTER" spacing="10.0" styleClass="box">
+              <children>
+                <Button fx:id="btnPrev" mnemonicParsing="false" onAction="#handleBtnPrevAction" text="&lt;" />
+                <Label fx:id="lblDate" alignment="CENTER" minWidth="-Infinity" text="2055/11/28" />
+                <Button fx:id="btnNext" mnemonicParsing="false" onAction="#handleBtnNextAction" text="&gt;" />
+              </children>
+              <VBox.margin>
+                <Insets fx:id="x1" />
+              </VBox.margin>
+            </HBox>
+            <BorderPane VBox.margin="$x1">
+              <left>
+                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleBtnCancelAction" text="キャンセル" />
+              </left>
+              <right>
+                <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleBtnCreateAction" text="作成" />
+              </right>
+            </BorderPane>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </center>
+  <stylesheets>
+    <URL value="@../css/pos.css" />
+  </stylesheets>
+</BorderPane>
