@@ -181,6 +181,15 @@ public class PosController implements Initializable {
     }
 
     @FXML
+    private void handleBtnDeleteAction(ActionEvent event) {
+        int selectedIndex = table.getSelectionModel().getSelectedIndex();
+        if (selectedIndex > -1) {
+            ItemSaleModel model = table.getItems().remove(selectedIndex);
+            sumTotalAmount(Integer.parseInt(model.getAmount()) * -1);
+        }
+    }
+
+    @FXML
     private void handleTxtBarCodeAction(ActionEvent event) {
         String itemCode = txtBarCode.getText();
 

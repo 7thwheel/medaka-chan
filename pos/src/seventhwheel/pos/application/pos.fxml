@@ -29,14 +29,11 @@
                 </HBox>
                 <BorderPane HBox.hgrow="ALWAYS">
                   <left>
-                    <Button fx:id="btnRegister" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterAction" styleClass="register-button" text="次の会計" BorderPane.alignment="CENTER" />
+                    <Button fx:id="btnRegister" alignment="BOTTOM_CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnRegisterAction" styleClass="register-button" text="次の会計" BorderPane.alignment="CENTER" />
                   </left>
                   <padding>
                     <Insets left="10.0" />
                   </padding>
-                  <right>
-                    <Button fx:id="btnCancel" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnCancelAction" styleClass="cancel-button" text="中止" BorderPane.alignment="CENTER" />
-                  </right>
                 </BorderPane>
               </children>
               <padding>
@@ -64,7 +61,7 @@
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
                 <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="399.9998779296875" promptText="バーコードを読み込んでください" />
-                <Button fx:id="btnClear" mnemonicParsing="false" onAction="#handleBtnClearAction" styleClass="clear-button" text="クリア" />
+                <Button fx:id="btnClear" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#handleBtnClearAction" styleClass="clear-button" text="クリア" />
               </children>
             </HBox>
             <VBox id="" spacing="3.0" styleClass="box" VBox.vgrow="ALWAYS">
@@ -77,8 +74,18 @@
                     <TableColumn prefWidth="75.0" text="金額" fx:id="colAmount" />
                   </columns>
                 </TableView>
+                <HBox alignment="CENTER_RIGHT">
+                  <children>
+                    <Button fx:id="btnDelete" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#handleBtnDeleteAction" styleClass="cancel-button" text="削除" />
+                  </children>
+                </HBox>
               </children>
             </VBox>
+            <HBox alignment="CENTER_RIGHT">
+              <children>
+                <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#handleBtnCancelAction" styleClass="cancel-button" text="中止" />
+              </children>
+            </HBox>
           </children>
         </VBox>
       </children>
