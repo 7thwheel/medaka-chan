@@ -94,12 +94,15 @@
 
 /******************************************************
  *
- * キャンセルボタン
+ * クリアボタン
  *
  *****************************************************/
  .clear-button {
-	-fx-background-color: linear-gradient(derive(rgb(47, 123, 236), 40%) 0%, derive(rgb(47, 123, 236), -10%) 100%);
-    -fx-text-fill: white;
+	-fx-graphic: url("cross.png");
+	-fx-background-color: white;
+}
+ .clear-button:hover {
+	-fx-background-color: rgb(240, 240, 240);
  }
 
 /******************************************************
