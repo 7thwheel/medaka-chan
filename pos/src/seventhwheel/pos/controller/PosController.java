@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -41,6 +42,7 @@ public class PosController implements Initializable {
     public VBox bodyPos;
     public HBox hboxChange;
     public Label lblChange;
+    public Label lblCustomers;
 
     public TableView<ItemSaleModel> table;
     public TableColumn<ItemSaleModel, String> colItemName;
@@ -86,6 +88,7 @@ public class PosController implements Initializable {
 
         table.getItems().clear();
         hideChange();
+        countCustomers();
     }
 
     private void hideChange() {
@@ -162,6 +165,7 @@ public class PosController implements Initializable {
         txtBarCode.requestFocus();
         table.getItems().clear();
         hideChange();
+        countCustomers();
     }
 
     @FXML
@@ -255,6 +259,25 @@ public class PosController implements Initializable {
     void initTotalAmount() {
         totalAmount = 0;
         totalAmountProperty.set("0");
+    }
+
+    void countCustomers() {
+        String sql = "SELECT COUNT(*) FROM Sales WHERE SUBSTR(DateTime, 1, 10) = '%s';";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String currentDate = df.format(d);
+
+        Connection con = ConnectionPool.getConnection();
+        try (Statement stmt = con.createStatement()) {
+            ResultSet rs = stmt.executeQuery(String.format(sql, currentDate));
+
+            while (rs.next()) {
+                String count = rs.getString(1);
+                lblCustomers.setText(String.format("来客数 %s 人", count));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

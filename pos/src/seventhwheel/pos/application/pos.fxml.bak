@@ -60,7 +60,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="3.0" styleClass="box">
               <children>
-                <TextField id="BarCode" fx:id="txtBarCode" onAction="#handleTxtBarCodeAction" prefWidth="400.0" promptText="バーコードを読み込んでください" />
+                <TextField id="BarCode" fx:id="txtBarCode" minHeight="28.0" onAction="#handleTxtBarCodeAction" prefWidth="400.0" promptText="バーコードを読み込んでください" />
                 <Button fx:id="btnClear" alignment="CENTER" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleBtnClearAction" prefHeight="20.0" prefWidth="20.0" styleClass="clear-button" />
               </children>
             </HBox>
