@@ -196,32 +196,52 @@ public class MainController implements Initializable {
 
   @FXML
   private void handleMenuReportTotal(ActionEvent event) {
-    String yyyymm = new SimpleDateFormat("yyyy-MM").format(new Date());
-    File file = new File(String.format("report_%s.txt", yyyymm));
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-
-      Connection con = ConnectionPool.getConnection();
-      try (PreparedStatement ps = con.prepareStatement(Sql.get("report-total.sql"))) {
-        ps.setString(1, yyyymm);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-          String date = rs.getString(1);
-          String total = rs.getString(2);
-
-          bw.write(String.format("%s\t%s\r\n", date, total));
-
-          reportDetail(date, bw);
-        }
-
-        showMessageBar("レポートを作成しました");
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
+      FXMLLoader fxmlLoader = new FXMLLoader(PosApplication.class.getResource("ReportTotal.fxml"));
+      final Region reportDetail;
+      try {
+          reportDetail = (Region) fxmlLoader.load();
+      } catch (IOException e) {
+          throw new RuntimeException(e);
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
 
+      Scene scene = new Scene(reportDetail);
+      Stage stage = StageBuilder.create()
+              .scene(scene)
+              .build();
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(rootPane.getScene().getWindow());
+      stage.initStyle(StageStyle.UNDECORATED);
+
+      stage.showAndWait();
+
+      ReportTotalController controller = fxmlLoader.getController();
+      if (controller.getUserAction() == UserAction.SUBMIT) {
+          String yyyymm = controller.getCurrentMonth().replaceAll("/", "-");
+          File file = new File(String.format("report_%s.txt", yyyymm));
+          try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+              Connection con = ConnectionPool.getConnection();
+              try (PreparedStatement ps = con.prepareStatement(Sql.get("report-total.sql"))) {
+                  ps.setString(1, yyyymm);
+                  ResultSet rs = ps.executeQuery();
+
+                  while (rs.next()) {
+                      String date = rs.getString(1);
+                      String total = rs.getString(2);
+
+                      bw.write(String.format("%s\t%s\r\n", date, total));
+
+                      reportDetail(date, bw);
+                  }
+
+                  showMessageBar("レポートを作成しました");
+              } catch (SQLException e) {
+                  throw new RuntimeException(e);
+              }
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
+      }
   }
 
   void reportDetail(String date, BufferedWriter bw) {
