@@ -95,6 +95,7 @@ public class PosController implements Initializable {
         table.getItems().clear();
         hideChange();
         countCustomers();
+        updateItemCounter(0);
     }
 
     private void hideChange() {
