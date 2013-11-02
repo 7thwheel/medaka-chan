@@ -73,6 +73,11 @@
             </HBox>
             <VBox id="" spacing="3.0" styleClass="box" VBox.vgrow="ALWAYS">
               <children>
+                <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                  <children>
+                    <Label fx:id="lblItems" text="お買い上げ点数 10 点" />
+                  </children>
+                </HBox>
                 <TableView fx:id="table" VBox.vgrow="ALWAYS">
                   <columns>
                     <TableColumn minWidth="100.0" prefWidth="300.0" text="商品名" fx:id="colItemName" />

@@ -43,6 +43,7 @@ public class PosController implements Initializable {
     public HBox hboxChange;
     public Label lblChange;
     public Label lblCustomers;
+    public Label lblItems;
 
     public TableView<ItemSaleModel> table;
     public TableColumn<ItemSaleModel, String> colItemName;
@@ -53,12 +54,17 @@ public class PosController implements Initializable {
     private int quantity;
     private SimpleStringProperty totalAmountProperty = new SimpleStringProperty("0");
     private int totalAmount = 0;
+    private int itemCounter = 0;
 
     public PosController() {
     }
 
     void initQuantity() {
         quantity = 1;
+    }
+
+    void initItemCounter() {
+        itemCounter = 0;
     }
 
     @Override
@@ -161,11 +167,13 @@ public class PosController implements Initializable {
     private void clearFields() {
         initQuantity();
         initTotalAmount();
+        initItemCounter();
         txtBarCode.clear();
         txtBarCode.requestFocus();
         table.getItems().clear();
         hideChange();
         countCustomers();
+        updateItemCounter(0);
     }
 
     @FXML
@@ -190,6 +198,7 @@ public class PosController implements Initializable {
         if (selectedIndex > -1) {
             ItemSaleModel model = table.getItems().remove(selectedIndex);
             sumTotalAmount(Integer.parseInt(model.getAmount()) * -1);
+            updateItemCounter(Integer.parseInt(model.getQuantity()) * -1);
         }
     }
 
@@ -242,6 +251,7 @@ public class PosController implements Initializable {
                 model = new ItemSaleModel(name, price, String.valueOf(quantity), amount.toString(), item);
                 table.getItems().add(model);
                 sumTotalAmount(amount.intValue());
+                updateItemCounter(quantity);
             }
             initQuantity();
             txtBarCode.clear();
@@ -249,6 +259,11 @@ public class PosController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    void updateItemCounter(int delta) {
+        itemCounter += delta;
+        lblItems.setText(String.format("お買い上げ点数 %s 点", itemCounter));
     }
 
     void sumTotalAmount(int amount) {
