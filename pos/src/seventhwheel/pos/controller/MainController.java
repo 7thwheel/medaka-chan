@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
@@ -346,6 +344,36 @@ public class MainController implements Initializable {
       });
 
       fade.play();
+  }
+
+  @FXML
+  private void handleMenuReportItems(ActionEvent event) {
+    File file = new File("商品情報一覧.txt");
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
+                "バーコード", "商品名", "単価", "仕入先", "部門"));
+
+      Connection con = ConnectionPool.getConnection();
+      try (PreparedStatement ps = con.prepareStatement(Sql.get("report-item-list.sql"))) {
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+          bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
+                  rs.getString(1),
+                  rs.getString(2),
+                  rs.getString(3),
+                  rs.getString(4),
+                  rs.getString(5)));
+        }
+
+        showMessageBar("レポートを作成しました");
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
 }

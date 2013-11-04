@@ -52,6 +52,7 @@
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" fx:id="menuReportTotal" />
                     <MenuItem mnemonicParsing="false" onAction="#handleMenuReportDetail" text="売上明細" fx:id="menuReportDetail" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleMenuReportItems" text="商品情報一覧" fx:id="menuReportItems" />
                   </items>
                 </Menu>
               </menus>
