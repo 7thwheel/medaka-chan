@@ -7,14 +7,14 @@ import java.sql.Statement;
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Suppliers;
 
-public class SuppliersComboBox extends ComboBox<Suppliers> {
+public class SuppliersComboBox extends CodeComboBox<Suppliers> {
 
     public SuppliersComboBox() {
         setupItems();
+        setupHandler();
     }
 
     private void setupItems() {
@@ -30,7 +30,6 @@ public class SuppliersComboBox extends ComboBox<Suppliers> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

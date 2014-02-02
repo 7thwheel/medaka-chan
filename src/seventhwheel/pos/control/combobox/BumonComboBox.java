@@ -7,14 +7,14 @@ import java.sql.Statement;
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Bumon;
 
-public class BumonComboBox extends ComboBox<Bumon> {
+public class BumonComboBox extends CodeComboBox<Bumon> {
 
   public BumonComboBox() {
     setupItems();
+    setupHandler();
   }
 
   private void setupItems() {
@@ -30,7 +30,6 @@ public class BumonComboBox extends ComboBox<Bumon> {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-
   }
 
 }

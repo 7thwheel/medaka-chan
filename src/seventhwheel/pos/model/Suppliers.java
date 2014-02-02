@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Suppliers {
+import seventhwheel.pos.control.combobox.IComboBoxItem;
+
+public class Suppliers implements IComboBoxItem {
 
     public static final String TABLE = "SUPPLIERS";
 
@@ -84,6 +86,11 @@ public class Suppliers {
         }
 
         return list;
+    }
+
+    @Override
+    public String getKey() {
+        return String.valueOf(getSuppliercode());
     }
 
 }

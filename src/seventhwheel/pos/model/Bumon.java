@@ -4,11 +4,12 @@ package seventhwheel.pos.model;
  * generator Version 1.0.0 release 2007/10/10
  * generated Date Fri May 03 10:47:09 JST 2013
  */
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import seventhwheel.pos.control.combobox.IComboBoxItem;
 
 /**
  * BumonVo.
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0 history Symbol Date Person Note [1] 2013/05/03 akifumi
  *          Generated.
  */
-public class Bumon implements Serializable {
+public class Bumon implements IComboBoxItem {
 
     public static final String TABLE = "BUMON";
 
@@ -92,6 +93,11 @@ public class Bumon implements Serializable {
         }
 
         return list;
+    }
+
+    @Override
+    public String getKey() {
+        return String.valueOf(getBumoncode());
     }
 
 }
