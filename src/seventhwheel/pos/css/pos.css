@@ -65,6 +65,16 @@
 
 /******************************************************
  *
+ * メニュー
+ *
+ *****************************************************/
+.menu-item {
+    -fx-font-size: 18pt;
+    -fx-background-color: pink;
+}
+
+/******************************************************
+ *
  * 合計金額ラベル
  *
  *****************************************************/
@@ -77,20 +87,31 @@
  * 会計登録ボタン
  *
  *****************************************************/
- .register-button {
-    -fx-background-color: linear-gradient(derive(green, 80%) 0%, green 100%);
+.register-button {
+    -fx-background-color: derive(green, 50%);
     -fx-text-fill: white;
- }
+}
+
+.register-button:hover {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}
+
 
 /******************************************************
  *
  * キャンセルボタン
  *
  *****************************************************/
- .cancel-button {
-	-fx-background-color: linear-gradient(derive(rgb(209, 55, 37), 40%) 0%, derive(rgb(209, 55, 37), -10%) 100%);
+.cancel-button {
+    -fx-background-color: rgb(209, 55, 37);
     -fx-text-fill: white;
- }
+}
+
+.cancel-button:hover {
+    -fx-background-color: derive(red, -30%);
+    -fx-text-fill: white;
+}
 
 /******************************************************
  *
@@ -102,7 +123,7 @@
 	-fx-background-color: white;
 }
  .clear-button:hover {
-	-fx-background-color: rgb(240, 240, 240);
+    -fx-background-color: rgb(230, 230, 230);
  }
 
 /******************************************************
@@ -134,10 +155,11 @@
  *****************************************************/
 .message-bar {
     -fx-background-color: lightgoldenrodyellow;
+    -fx-background-color: linear-gradient(royalblue 0%, lightskyblue 100%);
 }
 
 .message-bar .message {
-	-fx-text-fill: #505050;
+	-fx-text-fill: white;
 }
 
 /******************************************************
