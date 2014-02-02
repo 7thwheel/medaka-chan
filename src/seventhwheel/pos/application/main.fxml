@@ -2,13 +2,11 @@
 
 <?import java.lang.*?>
 <?import java.net.*?>
-<?import java.util.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="root" xmlns:fx="http://javafx.com/fxml" fx:controller="seventhwheel.pos.controller.MainController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="seventhwheel.pos.controller.MainController">
   <children>
     <BorderPane fx:id="borderPane" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
@@ -34,7 +32,6 @@
             <VBox>
               <children>
                 <Label styleClass="header, title" text="店っこくちない専用POSシステム" />
-                <Label styleClass="header, systemname" text="めだかちゃん" />
               </children>
               <padding>
                 <Insets right="20.0" />
@@ -44,15 +41,15 @@
               <menus>
                 <Menu mnemonicParsing="false" text="登録">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuItems" text="商品情報" fx:id="menuItems" />
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuSuppliers" text="仕入先情報" fx:id="menuSuppliers" />
+                    <MenuItem fx:id="menuItems" mnemonicParsing="false" onAction="#handleMenuItems" text="商品情報" />
+                    <MenuItem fx:id="menuSuppliers" mnemonicParsing="false" onAction="#handleMenuSuppliers" text="仕入先情報" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="レポート">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" fx:id="menuReportTotal" />
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuReportDetail" text="売上明細" fx:id="menuReportDetail" />
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuReportItems" text="商品情報一覧" fx:id="menuReportItems" />
+                    <MenuItem fx:id="menuReportTotal" mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" />
+                    <MenuItem fx:id="menuReportDetail" mnemonicParsing="false" onAction="#handleMenuReportDetail" text="売上明細" />
+                    <MenuItem fx:id="menuReportItems" mnemonicParsing="false" onAction="#handleMenuReportItems" text="商品情報一覧" />
                   </items>
                 </Menu>
               </menus>
