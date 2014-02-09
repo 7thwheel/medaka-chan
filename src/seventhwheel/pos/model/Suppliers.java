@@ -4,11 +4,6 @@ package seventhwheel.pos.model;
  * generator Version 1.0.0 release 2007/10/10
  * generated Date Sun Aug 18 19:41:08 JST 2013
  */
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import seventhwheel.pos.control.combobox.IComboBoxItem;
 
 public class Suppliers implements IComboBoxItem {
@@ -67,25 +62,6 @@ public class Suppliers implements IComboBoxItem {
 
     public String toString() {
         return String.format("%2d : %s", getSuppliercode(), getName());
-    }
-
-    public static List<Suppliers> toObjects(ResultSet resultSet) {
-        List<Suppliers> list = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                int code = resultSet.getInt("SupplierCode");
-                String name = resultSet.getString("Name");
-                Suppliers data = new Suppliers();
-                data.setSuppliercode(code);
-                data.setName(name);
-
-                list.add(data);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
     }
 
     @Override

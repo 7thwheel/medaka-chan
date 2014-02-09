@@ -1,14 +1,17 @@
 package seventhwheel.pos.controller;
 
+import static seventhwheel.pos.db.ConnectionPool.*;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
@@ -40,7 +43,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.constants.UserAction;
-import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.sql.Sql;
 
 public class MainController implements Initializable {
@@ -106,7 +108,7 @@ public class MainController implements Initializable {
     private void handleMenuItems(ActionEvent event) {
         final Node pos = rootPane.getChildren().get(0);
         if (pos.getId().equals("borderPaneRegister")) {
-          return;
+            return;
         }
 
         final Region registerItem;
@@ -151,7 +153,7 @@ public class MainController implements Initializable {
     private void handleMenuSuppliers(ActionEvent event) {
         final Node pos = rootPane.getChildren().get(0);
         if (pos.getId().equals("borderPaneRegister")) {
-          return;
+            return;
         }
 
         final Region registerItem;
@@ -192,188 +194,171 @@ public class MainController implements Initializable {
         new ParallelTransition(translateOut, translateIn).play();
     }
 
-  @FXML
-  private void handleMenuReportTotal(ActionEvent event) {
-      FXMLLoader fxmlLoader = new FXMLLoader(PosApplication.class.getResource("ReportTotal.fxml"));
-      final Region reportDetail;
-      try {
-          reportDetail = (Region) fxmlLoader.load();
-      } catch (IOException e) {
-          throw new RuntimeException(e);
-      }
-
-      Scene scene = new Scene(reportDetail);
-      Stage stage = StageBuilder.create()
-              .scene(scene)
-              .build();
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(rootPane.getScene().getWindow());
-      stage.initStyle(StageStyle.UNDECORATED);
-
-      stage.showAndWait();
-
-      ReportTotalController controller = fxmlLoader.getController();
-      if (controller.getUserAction() == UserAction.SUBMIT) {
-          String yyyymm = controller.getCurrentMonth().replaceAll("/", "-");
-          File file = new File(String.format("report_%s.txt", yyyymm));
-          try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-
-              Connection con = ConnectionPool.getConnection();
-              try (PreparedStatement ps = con.prepareStatement(Sql.get("report-total.sql"))) {
-                  ps.setString(1, yyyymm);
-                  ResultSet rs = ps.executeQuery();
-
-                  while (rs.next()) {
-                      String date = rs.getString(1);
-                      String total = rs.getString(2);
-
-                      bw.write(String.format("%s\t%s\r\n", date, total));
-
-                      reportDetail(date, bw);
-                  }
-
-                  showMessageBar("レポートを作成しました");
-              } catch (SQLException e) {
-                  throw new RuntimeException(e);
-              }
-          } catch (IOException e) {
-              throw new RuntimeException(e);
-          }
-      }
-  }
-
-  void reportDetail(String date, BufferedWriter bw) {
-    Connection con = ConnectionPool.getConnection();
-    try (PreparedStatement ps = con.prepareStatement(Sql.get("report-detail.sql"))) {
-      ps.setString(1, date);
-      ResultSet rs = ps.executeQuery();
-
-      while (rs.next()) {
-        String supplierCode = rs.getString(2);
-        String supplierName = rs.getString(3);
-        String total = rs.getString(4);
-
-        bw.write(String.format("%s\t%s\t%s\t%s\r\n", date, supplierCode, supplierName, total));
-      }
-
-    } catch (SQLException | IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @FXML
-  private void handleMenuReportDetail(ActionEvent event) {
-      FXMLLoader fxmlLoader = new FXMLLoader(PosApplication.class.getResource("ReportDetail.fxml"));
-      final Region reportDetail;
-      try {
-          reportDetail = (Region) fxmlLoader.load();
-      } catch (IOException e) {
-          throw new RuntimeException(e);
-      }
-
-      Scene scene = new Scene(reportDetail);
-      Stage stage = StageBuilder.create()
-              .scene(scene)
-              .build();
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(rootPane.getScene().getWindow());
-      stage.initStyle(StageStyle.UNDECORATED);
-
-      stage.showAndWait();
-
-      ReportDetailController controller = fxmlLoader.getController();
-      if (controller.getUserAction() == UserAction.SUBMIT) {
-          String date = controller.getCurrentDate().substring(0, 10).replaceAll("/", "-");
-          File file = new File(String.format("report_%s.txt", date));
-          try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-              bw.write(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\r\n",
-                      "日時", "連番", "連番コード", "バーコード", "商品名", "単価", "数量", "仕入先", "部門", "金額"));
-
-            Connection con = ConnectionPool.getConnection();
-            try (PreparedStatement ps = con.prepareStatement(Sql.get("report-items.sql"))) {
-              ps.setString(1, date);
-              ResultSet rs = ps.executeQuery();
-
-              while (rs.next()) {
-                bw.write(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\r\n",
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getString(9),
-                        rs.getString(10)));
-              }
-
-              showMessageBar("レポートを作成しました");
-            } catch (SQLException e) {
-              throw new RuntimeException(e);
-            }
-          } catch (IOException e) {
+    @FXML
+    private void handleMenuReportTotal(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(PosApplication.class.getResource("ReportTotal.fxml"));
+        final Region reportDetail;
+        try {
+            reportDetail = (Region) fxmlLoader.load();
+        } catch (IOException e) {
             throw new RuntimeException(e);
-          }
-      }
-  }
-
-  public static void showMessageBar(String message) {
-      lblMessage.setText(message);
-      add(messageBar);
-      FadeTransition fadeIn = FadeTransitionBuilder.create()
-              .node(messageBar)
-              .duration(Duration.seconds(0.2))
-              .fromValue(0.0)
-              .toValue(1.0)
-              .build();
-      FadeTransition fadeOut = FadeTransitionBuilder.create()
-              .node(messageBar)
-              .delay(Duration.seconds(1.2))
-              .duration(Duration.seconds(1.0))
-              .fromValue(1.0)
-              .toValue(0.0)
-              .build();
-      SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
-      fade.setOnFinished(new EventHandler<ActionEvent>() {
-
-          @Override
-          public void handle(ActionEvent arg0) {
-              remove(messageBar);
-          }
-      });
-
-      fade.play();
-  }
-
-  @FXML
-  private void handleMenuReportItems(ActionEvent event) {
-    File file = new File("商品情報一覧.txt");
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-        bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
-                "バーコード", "商品名", "単価", "仕入先", "部門"));
-
-      Connection con = ConnectionPool.getConnection();
-      try (PreparedStatement ps = con.prepareStatement(Sql.get("report-item-list.sql"))) {
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-          bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
-                  rs.getString(1),
-                  rs.getString(2),
-                  rs.getString(3),
-                  rs.getString(4),
-                  rs.getString(5)));
         }
 
-        showMessageBar("レポートを作成しました");
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+        Scene scene = new Scene(reportDetail);
+        Stage stage = StageBuilder.create()
+                .scene(scene)
+                .build();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(rootPane.getScene().getWindow());
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.showAndWait();
+
+        ReportTotalController controller = fxmlLoader.getController();
+        if (controller.getUserAction() == UserAction.SUBMIT) {
+            String yyyymm = controller.getCurrentMonth().replaceAll("/", "-");
+            File file = new File(String.format("report_%s.txt", yyyymm));
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                List<Map<String, Object>> maps = getPersist().readMapList(Sql.get("report-total.sql"), yyyymm);
+                for (Map<String, Object> map : maps) {
+                    String date = map.get("datetime").toString();
+                    String total = map.get("total").toString();
+                    bw.write(String.format("%s\t%s\r\n", date, total));
+                    reportDetail(date, bw);
+                }
+                showMessageBar("レポートを作成しました");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-  }
+    void reportDetail(String date, BufferedWriter bw) {
+        List<Map<String, Object>> maps = getPersist().readMapList(Sql.get("report-detail.sql"), date);
+        for (Map<String, Object> map : maps) {
+            String supplierCode = map.get("suppliercode").toString();
+            String supplierName = map.get("name").toString();
+            String amount = map.get("amount").toString();
+
+            try {
+                bw.write(String.format("%s\t%s\t%s\t%s\r\n", date, supplierCode, supplierName, amount));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @FXML
+    private void handleMenuReportDetail(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(PosApplication.class.getResource("ReportDetail.fxml"));
+        final Region reportDetail;
+        try {
+            reportDetail = (Region) fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(reportDetail);
+        Stage stage = StageBuilder.create()
+                .scene(scene)
+                .build();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(rootPane.getScene().getWindow());
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.showAndWait();
+
+        ReportDetailController controller = fxmlLoader.getController();
+        if (controller.getUserAction() == UserAction.SUBMIT) {
+            String date = controller.getCurrentDate().substring(0, 10).replaceAll("/", "-");
+            File file = new File(String.format("report_%s.txt", date));
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                bw.write(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\r\n",
+                        "日時", "連番", "連番コード", "バーコード", "商品名", "単価", "数量", "仕入先", "部門", "金額"));
+
+                try (PreparedStatement ps = getConnection().prepareStatement(Sql.get("report-items.sql"))) {
+                    ps.setString(1, date);
+                    ResultSet rs = ps.executeQuery();
+
+                    while (rs.next()) {
+                        bw.write(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\r\n",
+                                rs.getString(1),
+                                rs.getString(2),
+                                rs.getString(3),
+                                rs.getString(4),
+                                rs.getString(5),
+                                rs.getString(6),
+                                rs.getString(7),
+                                rs.getString(8),
+                                rs.getString(9),
+                                rs.getString(10)));
+                    }
+
+                    showMessageBar("レポートを作成しました");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void showMessageBar(String message) {
+        lblMessage.setText(message);
+        add(messageBar);
+        FadeTransition fadeIn = FadeTransitionBuilder.create()
+                .node(messageBar)
+                .duration(Duration.seconds(0.2))
+                .fromValue(0.0)
+                .toValue(1.0)
+                .build();
+        FadeTransition fadeOut = FadeTransitionBuilder.create()
+                .node(messageBar)
+                .delay(Duration.seconds(1.2))
+                .duration(Duration.seconds(1.0))
+                .fromValue(1.0)
+                .toValue(0.0)
+                .build();
+        SequentialTransition fade = new SequentialTransition(fadeIn, fadeOut);
+        fade.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                remove(messageBar);
+            }
+        });
+
+        fade.play();
+    }
+
+    @FXML
+    private void handleMenuReportItems(ActionEvent event) {
+        File file = new File("商品情報一覧.txt");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
+                    "バーコード", "商品名", "単価", "仕入先", "部門"));
+
+            try (PreparedStatement ps = getConnection().prepareStatement(Sql.get("report-item-list.sql"))) {
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    bw.write(String.format("%s\t%s\t%s\t%s\t%s\r\n",
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5)));
+                }
+
+                showMessageBar("レポートを作成しました");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

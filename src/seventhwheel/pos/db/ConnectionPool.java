@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import net.sf.persist.Persist;
+
 public class ConnectionPool {
 
   private static Connection connection;
@@ -33,6 +35,10 @@ public class ConnectionPool {
     }
 
     return connection;
+  }
+
+  public static Persist getPersist() {
+      return new Persist(getConnection());
   }
 
   /**

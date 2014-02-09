@@ -1,8 +1,6 @@
 package seventhwheel.pos.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import net.sf.persist.Persist;
 
 public class Saleitems {
 
@@ -150,19 +148,11 @@ public class Saleitems {
         return buffer.toString();
     }
 
-    public void insert(Connection con) throws SQLException {
-        PreparedStatement ps =
-                con.prepareStatement(
-                        "insert into SaleItems (SaleId, ItemCode, Name, Price, Quantity, SupplierCode, BumonCode) " +
-                        "values (?, ?, ?, ?, ?, ?, ?)");
-        ps.setString(1, getSaleid());
-        ps.setString(2, getItemcode());
-        ps.setString(3, getName());
-        ps.setString(4, getPrice());
-        ps.setInt(5, getQuantity());
-        ps.setInt(6, getSuppliercode());
-        ps.setInt(7, getBumoncode());
-        ps.execute();
+    public void insert(Persist persist) {
+        String sql = "insert into SaleItems (SaleId, ItemCode, Name, Price, Quantity, SupplierCode, BumonCode) "
+                + "values (?, ?, ?, ?, ?, ?, ?)";
+        persist.executeUpdate(sql,
+                getSaleid(), getItemcode(), getName(), getPrice(), getQuantity(), getSuppliercode(), getBumoncode());
     }
 
 }

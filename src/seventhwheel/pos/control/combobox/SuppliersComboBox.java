@@ -1,13 +1,10 @@
 package seventhwheel.pos.control.combobox;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import static seventhwheel.pos.db.ConnectionPool.*;
+
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Suppliers;
 
 public class SuppliersComboBox extends CodeComboBox<Suppliers> {
@@ -18,18 +15,13 @@ public class SuppliersComboBox extends CodeComboBox<Suppliers> {
     }
 
     private void setupItems() {
-        Connection con = ConnectionPool.getConnection();
+        String sql = "SELECT * FROM Suppliers ORDER BY SupplierCode";
+        List<Suppliers> items = getPersist().readList(Suppliers.class, sql);
+        setItems(FXCollections.observableArrayList(items));
+    }
 
-        try (Statement stmt = con.createStatement()) {
-            String sql = "SELECT * FROM Suppliers ORDER BY SupplierCode";
-            ResultSet rs = stmt.executeQuery(sql);
-
-            List<Suppliers> items = Suppliers.toObjects(rs);
-
-            setItems(FXCollections.observableArrayList(items));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public int getSupplierCode() {
+        return getValue().getSuppliercode();
     }
 
 }

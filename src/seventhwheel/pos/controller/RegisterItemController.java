@@ -1,16 +1,12 @@
 package seventhwheel.pos.controller;
 
+import static seventhwheel.pos.db.ConnectionPool.*;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.animation.ParallelTransition;
@@ -24,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -33,7 +28,8 @@ import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
 import seventhwheel.pos.control.NumberTextField;
-import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.control.combobox.BumonComboBox;
+import seventhwheel.pos.control.combobox.SuppliersComboBox;
 import seventhwheel.pos.model.Bumon;
 import seventhwheel.pos.model.Item;
 import seventhwheel.pos.model.Suppliers;
@@ -43,8 +39,8 @@ public class RegisterItemController implements Initializable {
     public TextField txtBarCode;
     public TextField txtItemName;
     public NumberTextField txtPrice;
-    public ComboBox<Bumon> cobBumon;
-    public ComboBox<Suppliers> cobSuppliers;
+    public SuppliersComboBox cobSuppliers;
+    public BumonComboBox cobBumon;
     public Button btnRegister;
     public Button btnBack;
     public BorderPane borderPaneRegister;
@@ -207,34 +203,19 @@ public class RegisterItemController implements Initializable {
             return;
         }
 
-        // update
         String itemCode = txtBarCode.getText();
         Item item = select(itemCode);
 
-        Connection con = ConnectionPool.getConnection();
-
-        try {
-            if (item == null) {
-                try (Statement stmt2 = con.createStatement()) {
-                    String sql = "INSERT INTO Item (ItemCode, Name, Price, SupplierCode, BumonCode) VALUES ('%s', '%s', '%s', %s, %s);";
-                    stmt2.executeUpdate(String.format(
-                            sql, itemCode, txtItemName.getText(), txtPrice.getText(),
-                            cobSuppliers.getValue().getSuppliercode(),
-                            cobBumon.getValue().getBumoncode()));
-                }
-            } else {
-                try (Statement stmt2 = con.createStatement()) {
-                    String sql = "UPDATE Item SET Name='%s', Price='%s', SupplierCode=%s, BumonCode=%s WHERE ItemCode='%s';";
-                    stmt2.executeUpdate(
-                            String.format(
-                                    sql, txtItemName.getText(), txtPrice.getText(),
-                                    cobSuppliers.getValue().getSuppliercode(),
-                                    cobBumon.getValue().getBumoncode(),
-                                    itemCode));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (item == null) {
+            String insert = "INSERT INTO Item (ItemCode, Name, Price, SupplierCode, BumonCode) VALUES (?, ?, ?, ?, ?);";
+            getPersist().executeUpdate(insert, itemCode, txtItemName.getText(), txtPrice.getText(),
+                    cobSuppliers.getSupplierCode(), cobBumon.getBumonCode());
+        } else {
+            item.setName(txtItemName.getText());
+            item.setPrice(txtPrice.getText());
+            item.setSupplierCode(cobSuppliers.getSupplierCode());
+            item.setBumonCode(cobBumon.getBumonCode());
+            getPersist().update(item);
         }
 
         txtBarCode.requestFocus();
@@ -324,30 +305,8 @@ public class RegisterItemController implements Initializable {
     }
 
     public Item select(String itemCode) {
-        try (Statement stmt = ConnectionPool.getConnection().createStatement()) {
-            String sql = "SELECT * FROM Item where ItemCode = '%s';";
-            ResultSet rs = stmt.executeQuery(String.format(sql, itemCode));
-
-            List<Item> items = new ArrayList<>();
-            while (rs.next()) {
-                Item item = new Item();
-                item.setItemcode(rs.getString("ItemCode"));
-                item.setName(rs.getString("Name"));
-                item.setPrice(rs.getString("Price"));
-                item.setSupplierCode(rs.getInt("SupplierCode"));
-                item.setBumonCode(rs.getInt("BumonCode"));
-                items.add(item);
-            }
-
-            if (items.isEmpty()) {
-                return null;
-            } else {
-                return items.get(0);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        String sql = "SELECT * FROM Item where ItemCode = ?;";
+        return getPersist().read(Item.class, sql, itemCode);
     }
 
 }

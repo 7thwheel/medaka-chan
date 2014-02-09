@@ -4,11 +4,6 @@ package seventhwheel.pos.model;
  * generator Version 1.0.0 release 2007/10/10
  * generated Date Fri May 03 10:47:09 JST 2013
  */
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import seventhwheel.pos.control.combobox.IComboBoxItem;
 
 /**
@@ -74,25 +69,6 @@ public class Bumon implements IComboBoxItem {
 
     public String toString() {
         return String.format("%2d : %s", getBumoncode(), getName());
-    }
-
-    public static List<Bumon> toObjects(ResultSet resultSet) {
-        List<Bumon> list = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                int code = resultSet.getInt("BumonCode");
-                String name = resultSet.getString("Name");
-                Bumon data = new Bumon();
-                data.setBumoncode(code);
-                data.setName(name);
-
-                list.add(data);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
     }
 
     @Override

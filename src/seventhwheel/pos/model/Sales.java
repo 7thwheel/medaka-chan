@@ -1,8 +1,5 @@
 package seventhwheel.pos.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class Sales {
 
@@ -75,14 +72,6 @@ public class Sales {
         buffer.append(total);
         buffer.append("]");
         return buffer.toString();
-    }
-
-    public void insert(Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("insert into Sales values (?, ?, ?)");
-        ps.setString(1, getId());
-        ps.setString(2, getDatetime());
-        ps.setString(3, getTotal());
-        ps.execute();
     }
 
 }

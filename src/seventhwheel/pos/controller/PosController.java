@@ -1,11 +1,9 @@
 package seventhwheel.pos.controller;
 
+import static seventhwheel.pos.db.ConnectionPool.*;
+
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import net.sf.persist.Persist;
 import seventhwheel.pos.db.ConnectionPool;
 import seventhwheel.pos.model.Item;
 import seventhwheel.pos.model.ItemSaleModel;
@@ -116,52 +115,32 @@ public class PosController implements Initializable {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String datetime = format.format(new Date(Long.parseLong(id)));
 
-        Connection con = ConnectionPool.getConnection();
-        try {
-            con.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Persist persist = getPersist();
+        persist.setAutoCommit(false);
 
-        Sales sales = new Sales(id, datetime, String.valueOf(totalAmount));
         try {
-            sales.insert(con);
-        } catch (SQLException e) {
-            try {
-                con.rollback();
-            } catch (SQLException r) {
-                throw new RuntimeException(r);
+            Sales sales = new Sales(id, datetime, String.valueOf(totalAmount));
+            persist.insert(sales);
+
+            for (ItemSaleModel model : table.getItems()) {
+                Saleitems saleItems = new Saleitems();
+                saleItems.setSaleid(id);
+                saleItems.setItemcode(model.getItem().getItemcode());
+                saleItems.setName(model.getItemName());
+                saleItems.setPrice(model.getPrice());
+                saleItems.setQuantity(Integer.parseInt(model.getQuantity()));
+                saleItems.setSuppliercode(model.getItem().getSupplierCode());
+                saleItems.setBumoncode(model.getItem().getBumonCode());
+                saleItems.insert(persist);
             }
+
+            persist.commit();
+        } catch (RuntimeException e) {
+            persist.rollback();
             throw new RuntimeException(e);
         }
 
-        for (ItemSaleModel model : table.getItems()) {
-            Saleitems saleItems = new Saleitems();
-            saleItems.setSaleid(id);
-            saleItems.setItemcode(model.getItem().getItemcode());
-            saleItems.setName(model.getItemName());
-            saleItems.setPrice(model.getPrice());
-            saleItems.setQuantity(Integer.parseInt(model.getQuantity()));
-            saleItems.setSuppliercode(model.getItem().getSupplierCode());
-            saleItems.setBumoncode(model.getItem().getBumonCode());
-            try {
-                saleItems.insert(con);
-            } catch (SQLException e) {
-                try {
-                    con.rollback();
-                } catch (SQLException r) {
-                    throw new RuntimeException(r);
-                }
-                throw new RuntimeException(e);
-            }
-        }
-
-        try {
-            con.commit();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        persist.setAutoCommit(true);
         clearFields();
     }
 
@@ -228,38 +207,21 @@ public class PosController implements Initializable {
             itemCode = split[1];
         }
 
-        Connection con = ConnectionPool.getConnection();
-        ItemSaleModel model = null;
-
-        try (Statement stmt = con.createStatement()) {
-            String sql = "SELECT * FROM Item where ItemCode = '%s'";
-            ResultSet rs = stmt.executeQuery(String.format(sql, itemCode));
-
-            while (rs.next()) {
-                itemCode = rs.getString("ItemCode");
-                String name = rs.getString("Name");
-                String price = rs.getString("Price");
-                int supplierCode = rs.getInt("SupplierCode");
-                int bumonCode = rs.getInt("BumonCode");
-                BigDecimal amount = BigDecimal.valueOf(Integer.parseInt(price)).multiply(
-                        BigDecimal.valueOf(quantity));
-                Item item = new Item();
-                item.setItemcode(itemCode);
-                item.setName(name);
-                item.setPrice(price);
-                item.setSupplierCode(supplierCode);
-                item.setBumonCode(bumonCode);
-                model = new ItemSaleModel(name, price, String.valueOf(quantity), amount.toString(), item);
-                table.getItems().add(model);
-                sumTotalAmount(amount.intValue());
-                updateItemCounter(quantity);
-            }
-            initQuantity();
-            txtBarCode.clear();
-            txtBarCode.home();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        String sql = "SELECT * FROM Item where ItemCode = ?";
+        Item item = getPersist().read(Item.class, sql, itemCode);
+        if (item != null) {
+            BigDecimal amount = BigDecimal.valueOf(Integer.parseInt(item.getPrice())).multiply(
+                    BigDecimal.valueOf(quantity));
+            ItemSaleModel model = new ItemSaleModel(
+                    item.getName(), item.getPrice(), String.valueOf(quantity), amount.toString(), item);
+            table.getItems().add(model);
+            sumTotalAmount(amount.intValue());
+            updateItemCounter(quantity);
         }
+
+        initQuantity();
+        txtBarCode.clear();
+        txtBarCode.home();
     }
 
     void updateItemCounter(int delta) {
@@ -278,22 +240,12 @@ public class PosController implements Initializable {
     }
 
     void countCustomers() {
-        String sql = "SELECT COUNT(*) FROM Sales WHERE SUBSTR(DateTime, 1, 10) = '%s';";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date d = new Date();
         String currentDate = df.format(d);
-
-        Connection con = ConnectionPool.getConnection();
-        try (Statement stmt = con.createStatement()) {
-            ResultSet rs = stmt.executeQuery(String.format(sql, currentDate));
-
-            while (rs.next()) {
-                String count = rs.getString(1);
-                lblCustomers.setText(String.format("来客数 %s 人", count));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        String sql = "SELECT COUNT(*) FROM Sales WHERE SUBSTR(DateTime, 1, 10) = ?;";
+        String count = getPersist().read(String.class, sql, currentDate);
+        lblCustomers.setText(String.format("来客数 %s 人", count));
     }
 
 }

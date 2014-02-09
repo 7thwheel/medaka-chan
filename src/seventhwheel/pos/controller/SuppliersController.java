@@ -1,11 +1,8 @@
 package seventhwheel.pos.controller;
+import static seventhwheel.pos.db.ConnectionPool.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,7 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import seventhwheel.pos.application.PosApplication;
-import seventhwheel.pos.db.ConnectionPool;
+import seventhwheel.pos.model.Suppliers;
 import seventhwheel.pos.model.SuppliersModel;
 
 public class SuppliersController implements Initializable {
@@ -98,22 +95,16 @@ public class SuppliersController implements Initializable {
     }
 
     List<SuppliersModel> select() {
-        try (Statement stmt = ConnectionPool.getConnection().createStatement()) {
-            String sql = "SELECT * FROM Suppliers;";
-            ResultSet rs = stmt.executeQuery(sql);
-
-            List<SuppliersModel> suppliers = new ArrayList<>();
-            while (rs.next()) {
-                SuppliersModel supplier = new SuppliersModel();
-                supplier.setSuppliercode(rs.getInt("SupplierCode"));
-                supplier.setName(rs.getString("Name"));
-                suppliers.add(supplier);
-            }
-
-            return suppliers;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        String sql = "SELECT * FROM Suppliers;";
+        List<Suppliers> list = getPersist().readList(Suppliers.class, sql);
+        List<SuppliersModel> models = new ArrayList<>();
+        for (Suppliers suppliers : list) {
+            SuppliersModel model = new SuppliersModel();
+            model.setSuppliercode(suppliers.getSuppliercode());
+            model.setName(suppliers.getName());
+            models.add(model);
         }
+        return models;
     }
 
     void updateTable() {
@@ -122,25 +113,12 @@ public class SuppliersController implements Initializable {
 
     @FXML
     private void handleBtnRegisterAction(ActionEvent event) {
-        String sql = "";
         if (mode == Mode.MODIFY) {
-            sql = "update Suppliers set name = ? where suppliercode = ?;";
-            try (PreparedStatement ps = ConnectionPool.getConnection().prepareStatement(sql)) {
-                ps.setString(1, txtName.getText());
-                ps.setInt(2, selected.getSuppliercode());
-                ps.executeUpdate();
-                mode = Mode.ADD;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            String sql = "update Suppliers set name = ? where suppliercode = ?;";
+            getPersist().executeUpdate(sql, txtName.getText(), selected.getSuppliercode());
+            mode = Mode.ADD;
         } else {
-            sql = "insert into Suppliers (name) values (?);";
-            try (PreparedStatement ps = ConnectionPool.getConnection().prepareStatement(sql)) {
-                ps.setString(1, txtName.getText());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            getPersist().executeUpdate("insert into Suppliers (name) values (?);", txtName.getText());
         }
 
         updateTable();
