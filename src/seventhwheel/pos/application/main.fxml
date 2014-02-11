@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="seventhwheel.pos.controller.MainController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seventhwheel.pos.controller.MainController">
   <children>
     <BorderPane fx:id="borderPane" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
@@ -47,8 +47,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="レポート">
                   <items>
-                    <MenuItem fx:id="menuReportTotal" mnemonicParsing="false" onAction="#handleMenuReportTotal" text="今日の売上集計" />
-                    <MenuItem fx:id="menuReportDetail" mnemonicParsing="false" onAction="#handleMenuReportDetail" text="売上明細" />
+                    <MenuItem fx:id="menuReportTotal" mnemonicParsing="false" onAction="#handleMenuReportTotal" text="仕入先別日計（月単位）" />
+                    <MenuItem fx:id="menuReportDetail" mnemonicParsing="false" onAction="#handleMenuReportDetail" text="売上明細（日単位）" />
                     <MenuItem fx:id="menuReportItems" mnemonicParsing="false" onAction="#handleMenuReportItems" text="商品情報一覧" />
                   </items>
                 </Menu>
